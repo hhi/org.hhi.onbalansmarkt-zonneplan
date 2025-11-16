@@ -626,7 +626,7 @@
       "getable": true,
       "setable": false,
       "uiComponent": "sensor",
-      "icon": "/assets/capabilities/zonneplan_next_poll_minutes.svg"
+      "icon": "/assets/capabilities/zonneplan_last_update.svg"
     },
     "zonneplan_load_balancing": {
       "id": "zonneplan_load_balancing",

@@ -14,5 +14,5 @@
   "getable": true,
   "setable": false,
   "uiComponent": "sensor",
-  "icon": "/assets/capabilities/zonneplan_next_poll_minutes.svg"
+  "icon": "/assets/capabilities/zonneplan_last_update.svg"
 }
