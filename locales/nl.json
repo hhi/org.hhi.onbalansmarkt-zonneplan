@@ -1,0 +1,40 @@
+{
+  "pair": {
+    "zonneplan": {
+      "configure": {
+        "title": "Zonneplan Batterij",
+        "subtitle": "Configureer je Zonneplan batterij voor Onbalansmarkt integratie",
+        "device_name": "Apparaatnaam",
+        "device_name.hint": "Kies een herkenbare naam voor je batterij",
+        "trading_mode": "Handelsmodus",
+        "trading_mode.manual": "Handmatig",
+        "trading_mode.imbalance": "Onbalans",
+        "trading_mode.imbalance_aggressive": "Onbalans Agressief",
+        "trading_mode.self_consumption_plus": "Eigen Verbruik Plus",
+        "trading_mode.hint": "Selecteer de handelsmodus voor Onbalansmarkt integratie"
+      },
+      "api_key": {
+        "title": "Onbalansmarkt Integratie",
+        "subtitle": "Optioneel: voer je Onbalansmarkt API key in om automatisch data te versturen",
+        "api_key": "API Key",
+        "api_key.hint": "Verkrijg een API key op https://onbalansmarkt.com (optioneel)",
+        "auto_send": "Automatisch metingen versturen",
+        "auto_send.hint": "Stuur batterijdata automatisch naar Onbalansmarkt wanneer deze via flow card ontvangen wordt",
+        "error": {
+          "api_key_required": "API key is vereist wanneer auto-send is ingeschakeld."
+        }
+      }
+    },
+    "buttons": {
+      "next": "Volgende",
+      "skip": "Overslaan",
+      "finish": "Voltooien"
+    }
+  },
+  "error": {
+    "validation": {
+      "title": "Validatiefout",
+      "fields": "Vul alstublieft alle verplichte velden in."
+    }
+  }
+}

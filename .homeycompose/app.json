@@ -1,0 +1,54 @@
+{
+  "id": "org.hhi.onbalansmarkt-zonneplan",
+  "version": "0.1.0",
+  "compatibility": ">=12.4.0",
+  "sdk": 3,
+  "platforms": [
+    "local"
+  ],
+  "name": {
+    "en": "Onbalansmarkt Zonneplan Battery",
+    "nl": "Onbalansmarkt Zonneplan Batterij"
+  },
+  "description": {
+    "en": "Delivers Zonneplan battery trading results to onbalansmarkt.com",
+    "nl": "Levert Zonneplan batterij handelsresultaten aan onbalansmarkt.com"
+  },
+  "category": [
+    "energy"
+  ],
+  "permissions": [],
+  "images": {
+    "small": "/assets/images/onbalansmarkt_250x175.png",
+    "large": "/assets/images/onbalansmarkt_500x350.png",
+    "xlarge": "/assets/images/onbalansmarkt_1000x700.png"
+  },
+  "author": {
+    "name": "H Hi",
+    "email": "iphone.HHi@me.com"
+  },
+  "brandColor": "#00b8a9",
+  "icon": "/assets/icon.svg",
+  "support": "mailto:iphone.HHi@me.com",
+  "source": "https://github.com/hhi/org.hhi.onbalansmarkt-zonneplan",
+  "homepageUrl": "https://onbalansmarkt.com/help",
+  "bugs": {
+    "url": "https://github.com/hhi/org.hhi.onbalansmarkt-zonneplan/issues"
+  },
+  "tags": {
+    "nl": [
+      "thuisbatterij",
+      "onbalansmarkt",
+      "Zonneplan"
+    ],
+    "en": [
+      "home battery",
+      "imbalance market",
+      "Zonneplan"
+    ]
+  },
+  "locales": [
+    "en",
+    "nl"
+  ]
+}

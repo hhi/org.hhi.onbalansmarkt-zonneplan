@@ -1,0 +1,30 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#0066CC" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Average line chart -->
+  <g transform="translate(100, 95) scale(1.05)">
+    <!-- Chart background -->
+    <rect x="-35" y="-25" width="70" height="50" rx="2" fill="#0066CC" opacity="0.05" stroke="none"/>
+
+    <!-- Grid lines -->
+    <g stroke="#0066CC" stroke-width="0.5" opacity="0.2">
+      <line x1="-35" y1="-15" x2="35" y2="-15"/>
+      <line x1="-35" y1="0" x2="35" y2="0"/>
+      <line x1="-35" y1="15" x2="35" y2="15"/>
+    </g>
+
+    <!-- Average line (fairly flat) -->
+    <polyline points="-30,-8 -15,-5 0,-2 15,-4 30,-3" stroke="#0066CC" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Line fill beneath -->
+    <path d="M -30,-8 L -15,-5 L 0,-2 L 15,-4 L 30,-3 L 30,20 L -30,20 Z" fill="#0066CC" opacity="0.08"/>
+  </g>
+
+  <!-- Euro symbol with average indicator -->
+  <g transform="translate(145, 140) scale(1.05)">
+    <circle cx="0" cy="0" r="14" fill="#0066CC" opacity="0.15"/>
+    <text x="0" y="4" font-size="14" font-weight="bold" fill="#0066CC" text-anchor="middle" font-family="Arial, sans-serif">€</text>
+    <text x="0" y="18" font-size="8" font-weight="600" fill="#0066CC" text-anchor="middle" font-family="Arial, sans-serif">AVG</text>
+  </g>
+</svg>

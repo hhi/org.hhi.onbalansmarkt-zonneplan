@@ -1,0 +1,38 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#00D084" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Electric vehicle - scaled 10% larger -->
+  <g transform="translate(70, 95) scale(1.15)">
+    <!-- Car body -->
+    <ellipse cx="0" cy="0" rx="22" ry="11" fill="none" stroke="#00A8E8" stroke-width="2"/>
+
+    <!-- Car roof -->
+    <path d="M -9 -11 L -7 -18 L 7 -18 L 9 -11 Z" fill="none" stroke="#00A8E8" stroke-width="2" stroke-linejoin="round"/>
+
+    <!-- Front wheel -->
+    <circle cx="-13" cy="11" r="5.5" fill="none" stroke="#00A8E8" stroke-width="1.5"/>
+
+    <!-- Rear wheel -->
+    <circle cx="13" cy="11" r="5.5" fill="none" stroke="#00A8E8" stroke-width="1.5"/>
+
+    <!-- Window -->
+    <rect x="-5" y="-14" width="10" height="7" rx="1" fill="none" stroke="#00A8E8" stroke-width="1" opacity="0.6"/>
+  </g>
+
+  <!-- Charging plug with status - scaled 10% larger -->
+  <g transform="translate(130, 95) scale(1.15)">
+    <!-- Plug outline -->
+    <path d="M -8 -10 L -8 8 L -4 10 L 4 10 L 8 8 L 8 -10 Z" fill="none" stroke="#00D084" stroke-width="2" stroke-linejoin="round"/>
+
+    <!-- Plug contacts -->
+    <circle cx="-3" cy="8" r="1.5" fill="#00D084" opacity="0.6"/>
+    <circle cx="3" cy="8" r="1.5" fill="#00D084" opacity="0.6"/>
+
+    <!-- Charging indicator (lightning) -->
+    <path d="M -2 -5 L -2 0 L 2 0 L -1 4 L -1 8" stroke="#00D084" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Charging status text -->
+  <text x="100" y="160" font-size="11" font-weight="600" fill="#00A854" text-anchor="middle" font-family="Arial, sans-serif">Charging</text>
+</svg>

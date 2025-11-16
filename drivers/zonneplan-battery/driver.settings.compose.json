@@ -1,0 +1,138 @@
+[
+  {
+    "type": "group",
+    "label": {
+      "en": "Device Configuration",
+      "nl": "Apparaat Configuratie"
+    },
+    "children": [
+      {
+        "id": "device_name",
+        "type": "text",
+        "label": {
+          "en": "Device Name",
+          "nl": "Apparaatnaam"
+        },
+        "value": "Zonneplan Battery",
+        "hint": {
+          "en": "Display name for this battery device",
+          "nl": "Weergavenaam voor dit batterijapparaat"
+        }
+      },
+      {
+        "id": "trading_mode",
+        "type": "dropdown",
+        "label": {
+          "en": "Trading Mode",
+          "nl": "Handelsmodus"
+        },
+        "value": "manual",
+        "values": [
+          {
+            "id": "imbalance",
+            "label": {
+              "en": "Imbalance",
+              "nl": "Onbalans"
+            }
+          },
+          {
+            "id": "imbalance_aggressive",
+            "label": {
+              "en": "Imbalance Aggressive",
+              "nl": "Onbalans Agressief"
+            }
+          },
+          {
+            "id": "self_consumption_plus",
+            "label": {
+              "en": "Self Consumption Plus",
+              "nl": "Eigen Verbruik Plus"
+            }
+          },
+          {
+            "id": "manual",
+            "label": {
+              "en": "Manual",
+              "nl": "Handmatig"
+            }
+          }
+        ],
+        "hint": {
+          "en": "Select the trading mode for Onbalansmarkt integration",
+          "nl": "Selecteer de handelsmodus voor Onbalansmarkt integratie"
+        }
+      },
+      {
+        "id": "total_earned_offset",
+        "type": "number",
+        "label": {
+          "en": "Total Earned Offset (€)",
+          "nl": "Totaal Verdiend Correctie (€)"
+        },
+        "value": 0,
+        "decimals": 2,
+        "hint": {
+          "en": "Manual offset to add to lifetime total earnings (e.g., to correct starting value)",
+          "nl": "Handmatige correctie om toe te voegen aan totale opbrengst (bijv. om startwaarde te corrigeren)"
+        }
+      }
+    ]
+  },
+  {
+    "type": "group",
+    "label": {
+      "en": "Onbalansmarkt Integration",
+      "nl": "Onbalansmarkt Integratie"
+    },
+    "children": [
+      {
+        "id": "onbalansmarkt_api_key",
+        "type": "password",
+        "label": {
+          "en": "API Key",
+          "nl": "API-sleutel"
+        },
+        "value": "",
+        "hint": {
+          "en": "Your Onbalansmarkt.com API key (optional). Get one at https://onbalansmarkt.com",
+          "nl": "Uw Onbalansmarkt.com API-sleutel (optioneel). Verkrijg er een op https://onbalansmarkt.com"
+        }
+      },
+      {
+        "id": "auto_send_measurements",
+        "type": "checkbox",
+        "label": {
+          "en": "Auto-send measurements",
+          "nl": "Automatisch metingen versturen"
+        },
+        "value": false,
+        "hint": {
+          "en": "Automatically send battery data to Onbalansmarkt.com when received via flow card (requires API key)",
+          "nl": "Automatisch batterijgegevens versturen naar Onbalansmarkt.com bij ontvangst via flow card (vereist API-sleutel)"
+        }
+      }
+    ]
+  },
+  {
+    "type": "group",
+    "label": {
+      "en": "Energy Dashboard",
+      "nl": "Energie Dashboard"
+    },
+    "children": [
+      {
+        "id": "exclude_from_energy",
+        "type": "checkbox",
+        "label": {
+          "en": "Exclude from Energy",
+          "nl": "Uitsluiten van Energie"
+        },
+        "value": true,
+        "hint": {
+          "en": "Exclude this device from the Homey Energy dashboard",
+          "nl": "Dit apparaat uitsluiten van het Homey Energie dashboard"
+        }
+      }
+    ]
+  }
+]

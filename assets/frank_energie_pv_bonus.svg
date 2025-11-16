@@ -1,0 +1,36 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#FFB703" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Sun -->
+  <g transform="translate(75, 80) scale(1.05)">
+    <!-- Sun circle -->
+    <circle cx="0" cy="0" r="14" fill="#FFB703" opacity="0.3" stroke="#FFB703" stroke-width="1.5"/>
+
+    <!-- Sun rays -->
+    <g stroke="#FFB703" stroke-width="1.5" stroke-linecap="round">
+      <line x1="0" y1="-24" x2="0" y2="-28"/>
+      <line x1="17" y1="-17" x2="20" y2="-22"/>
+      <line x1="24" y1="0" x2="28" y2="0"/>
+      <line x1="17" y1="17" x2="20" y2="22"/>
+      <line x1="0" y1="24" x2="0" y2="28"/>
+      <line x1="-17" y1="17" x2="-20" y2="22"/>
+      <line x1="-24" y1="0" x2="-28" y2="0"/>
+      <line x1="-17" y1="-17" x2="-20" y2="-22"/>
+    </g>
+  </g>
+
+  <!-- Bonus euro badge -->
+  <g transform="translate(130, 95) scale(1.05)">
+    <!-- Star background -->
+    <path d="M 0 -14 L 3 -5 L 12 -5 L 5 0 L 8 9 L 0 4 L -8 9 L -5 0 L -12 -5 L -3 -5 Z"
+          fill="#FFB703" opacity="0.2" stroke="#FFB703" stroke-width="1"/>
+
+    <!-- Euro symbol -->
+    <circle cx="0" cy="0" r="11" fill="#FFB703" opacity="0.15"/>
+    <text x="0" y="3" font-size="12" font-weight="bold" fill="#FFB703" text-anchor="middle" font-family="Arial, sans-serif">€</text>
+  </g>
+
+  <!-- Energy generation indicator -->
+  <path d="M 55 120 L 60 110 L 65 120 M 70 120 L 75 110 L 80 120" stroke="#FFB703" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+</svg>

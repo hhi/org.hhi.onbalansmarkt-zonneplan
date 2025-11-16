@@ -1,0 +1,22 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#0066CC" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Exchange symbol - enlarged and repositioned -->
+  <g transform="translate(100, 80) scale(1.35)">
+    <!-- Top arrow (upward) -->
+    <path d="M -20 -15 L -20 -35 L -28 -27 M -20 -35 L -12 -27" stroke="#00A8E8" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Bottom arrow (downward) -->
+    <path d="M 20 15 L 20 35 L 12 27 M 20 35 L 28 27" stroke="#FFB703" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Horizontal dividing line -->
+    <line x1="-35" y1="0" x2="35" y2="0" stroke="#0066CC" stroke-width="1.5" opacity="0.4"/>
+  </g>
+
+  <!-- Euro symbol integrated lower -->
+  <g transform="translate(100, 130) scale(1.3)">
+    <circle cx="0" cy="0" r="14" fill="#0066CC" opacity="0.1"/>
+    <text x="0" y="4" font-size="16" font-weight="bold" fill="#0066CC" text-anchor="middle" font-family="Arial, sans-serif">€</text>
+  </g>
+</svg>

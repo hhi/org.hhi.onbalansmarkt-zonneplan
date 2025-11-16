@@ -1,0 +1,52 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#FF6B6B" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Battery - scaled for better visibility -->
+  <g transform="translate(100, 115) scale(1.1)">
+    <!-- Battery outline -->
+    <rect x="-20" y="-18" width="40" height="45" rx="2" fill="none" stroke="#FF6B6B" stroke-width="2"/>
+
+    <!-- Battery terminal -->
+    <rect x="-7" y="-24" width="14" height="7" rx="1" fill="#FF6B6B" opacity="0.6"/>
+
+    <!-- Discharge indicator fill (partially empty) -->
+    <rect x="-18" y="10" width="36" height="12" rx="1" fill="#FF6B6B" opacity="0.5"/>
+  </g>
+
+  <!-- Upward arrow - discharging indicator (out of battery) -->
+  <g transform="translate(100, 35) scale(1.0)">
+    <!-- Arrow shaft -->
+    <line x1="0" y1="15" x2="0" y2="0" stroke="#FF6B6B" stroke-width="2.5" stroke-linecap="round"/>
+
+    <!-- Arrow head -->
+    <path d="M 0 0 L -6 7 M 0 0 L 6 7" stroke="#FF6B6B" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- API/Cloud indicator - small cloud with data dots -->
+  <g transform="translate(145, 50)">
+    <!-- Cloud outline -->
+    <path d="M -8 0 Q -8 -5 -3 -5 Q 0 -8 4 -5 Q 9 -5 9 0 Q 9 5 4 5 Q -3 5 -8 0 Z"
+          fill="none" stroke="#FF6B6B" stroke-width="1.5" opacity="0.8"/>
+    <!-- Data dots inside cloud -->
+    <circle cx="-3" cy="0" r="1" fill="#FF6B6B" opacity="0.9"/>
+    <circle cx="2" cy="0" r="1" fill="#FF6B6B" opacity="0.9"/>
+    <circle cx="5" cy="0" r="1" fill="#FF6B6B" opacity="0.9"/>
+  </g>
+
+  <!-- "Reported" indicator - small document/report icon -->
+  <g transform="translate(55, 50)">
+    <!-- Document outline -->
+    <rect x="-5" y="-6" width="10" height="12" rx="1" fill="none" stroke="#FF6B6B" stroke-width="1.5" opacity="0.8"/>
+    <!-- Document lines -->
+    <line x1="-3" y1="-2" x2="3" y2="-2" stroke="#FF6B6B" stroke-width="1" opacity="0.8"/>
+    <line x1="-3" y1="1" x2="3" y2="1" stroke="#FF6B6B" stroke-width="1" opacity="0.8"/>
+    <line x1="-3" y1="4" x2="1" y2="4" stroke="#FF6B6B" stroke-width="1" opacity="0.8"/>
+  </g>
+
+  <!-- Energy flow waves -->
+  <g stroke="#FF6B6B" stroke-width="1.5" fill="none" opacity="0.4">
+    <path d="M 75 65 Q 80 70 85 65 Q 90 60 95 65" stroke-dasharray="2,2"/>
+    <path d="M 105 65 Q 110 70 115 65 Q 120 60 125 65" stroke-dasharray="2,2"/>
+  </g>
+</svg>

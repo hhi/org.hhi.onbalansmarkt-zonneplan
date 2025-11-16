@@ -1,0 +1,30 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#00A854" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Price chart with minimum point -->
+  <g transform="translate(100, 95) scale(1.05)">
+    <!-- Chart area -->
+    <rect x="-35" y="-25" width="70" height="50" rx="2" fill="#00A854" opacity="0.05" stroke="none"/>
+
+    <!-- Price line with low point -->
+    <polyline points="-30,-5 -15,-2 0,8 15,10 30,5" stroke="#00A854" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Minimum point indicator -->
+    <circle cx="0" cy="8" r="4" fill="#00A854"/>
+    <circle cx="0" cy="8" r="2.5" fill="white"/>
+
+    <!-- Arrow pointing to minimum -->
+    <path d="M 0 3 L 0 0 L -3 3 M 0 0 L 3 3" stroke="#00D084" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Value line beneath -->
+    <path d="M -30,-5 L -15,-2 L 0,8 L 15,10 L 30,5 L 30,20 L -30,20 Z" fill="#00A854" opacity="0.08"/>
+  </g>
+
+  <!-- Minimum indicator -->
+  <g transform="translate(145, 140) scale(1.05)">
+    <circle cx="0" cy="0" r="14" fill="#00A854" opacity="0.15"/>
+    <text x="0" y="4" font-size="14" font-weight="bold" fill="#00A854" text-anchor="middle" font-family="Arial, sans-serif">€</text>
+    <text x="0" y="18" font-size="8" font-weight="600" fill="#00A854" text-anchor="middle" font-family="Arial, sans-serif">MIN</text>
+  </g>
+</svg>

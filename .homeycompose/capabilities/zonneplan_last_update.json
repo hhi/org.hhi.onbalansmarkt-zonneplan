@@ -1,0 +1,18 @@
+{
+  "id": "zonneplan_last_update",
+  "uiQuickAction": false,
+  "title": {
+    "en": "Last Update",
+    "nl": "Laatste Update"
+  },
+  "description": {
+    "en": "Timestamp of the last received battery metrics",
+    "nl": "Tijdstempel van de laatst ontvangen batterijgegevens"
+  },
+  "type": "string",
+  "insights": false,
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "icon": "/assets/capabilities/frank_energie_next_poll_minutes.svg"
+}

@@ -1,0 +1,42 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#FFB703" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Sun -->
+  <g transform="translate(75, 80) scale(1.05)">
+    <!-- Sun circle -->
+    <circle cx="0" cy="0" r="13" fill="#FFB703" opacity="0.2" stroke="#FFB703" stroke-width="1.5"/>
+
+    <!-- Sun rays -->
+    <g stroke="#FFB703" stroke-width="1.3" stroke-linecap="round">
+      <line x1="0" y1="-22" x2="0" y2="-26"/>
+      <line x1="15" y1="-15" x2="18" y2="-19"/>
+      <line x1="22" y1="0" x2="26" y2="0"/>
+      <line x1="15" y1="15" x2="18" y2="19"/>
+    </g>
+  </g>
+
+  <!-- Lightning bolt - power indicator -->
+  <g transform="translate(130, 85) scale(1.05)">
+    <!-- Lightning bolt -->
+    <path d="M 0 -15 L -6 -2 L -2 -2 L -8 12 L 0 3 L -4 3 Z"
+          fill="#FF6B6B" opacity="0.2" stroke="#FF6B6B" stroke-width="1.5" stroke-linejoin="round"/>
+
+    <!-- Inner lightning fill -->
+    <path d="M -4 -8 L -3 0 L 0 0 L -4 8" fill="#FF6B6B" opacity="0.4" stroke="none"/>
+  </g>
+
+  <!-- Power output indicator -->
+  <g transform="translate(100, 145) scale(1.05)">
+    <rect x="-20" y="-6" width="40" height="12" rx="2" fill="none" stroke="#FF6B6B" stroke-width="1.5" opacity="0.4"/>
+
+    <!-- Power level bars -->
+    <rect x="-16" y="-4" width="4" height="8" rx="1" fill="#FF6B6B" opacity="0.5"/>
+    <rect x="-8" y="-4" width="4" height="8" rx="1" fill="#FF6B6B" opacity="0.6"/>
+    <rect x="0" y="-4" width="4" height="8" rx="1" fill="#FF6B6B" opacity="0.7"/>
+    <rect x="8" y="-4" width="4" height="8" rx="1" fill="#FF6B6B" opacity="0.8"/>
+    <rect x="16" y="-4" width="4" height="8" rx="1" fill="#FF6B6B"/>
+
+    <text x="0" y="18" font-size="9" font-weight="600" fill="#FF6B6B" text-anchor="middle" font-family="Arial, sans-serif">3.2 kW</text>
+  </g>
+</svg>

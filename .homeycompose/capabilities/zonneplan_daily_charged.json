@@ -1,0 +1,21 @@
+{
+  "id": "zonneplan_daily_charged",
+  "uiQuickAction": false,
+  "title": {
+    "en": "Daily Charged",
+    "nl": "Dagelijks Geladen"
+  },
+  "description": {
+    "en": "Daily energy charged to battery in kWh (today only, resets at midnight)",
+    "nl": "Dagelijks aan batterij toegevoerde energie in kWh (alleen vandaag, reset om middernacht)"
+  },
+  "type": "number",
+  "insights": true,
+  "getable": true,
+  "setable": false,
+  "units": "kWh",
+  "decimals": 2,
+  "chartType": "stepLine",
+  "uiComponent": "sensor",
+  "icon": "/assets/capabilities/external_battery_daily_charged.svg"
+}

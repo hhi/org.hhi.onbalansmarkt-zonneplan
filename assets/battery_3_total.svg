@@ -1,0 +1,27 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bat3" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#00D084;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00A854;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#00A8E8" stroke-width="1.5" opacity="0.6"/>
+
+  <g transform="translate(100, 100) scale(1.15)">
+    <rect x="-20" y="-35" width="40" height="70" rx="2" fill="none" stroke="#00A8E8" stroke-width="2"/>
+    <rect x="-8" y="-42" width="16" height="8" rx="1" fill="#00A8E8" opacity="0.6"/>
+    <rect x="-18" y="-33" width="36" height="45" rx="1" fill="url(#bat3)" opacity="0.5"/>
+  </g>
+
+  <!-- Battery number indicator - positioned below battery -->
+  <g transform="translate(100, 165)">
+    <circle cx="0" cy="0" r="14" fill="#00A8E8" opacity="0.2" stroke="#00A8E8" stroke-width="1.5"/>
+    <text x="0" y="5" font-size="14" font-weight="bold" fill="#0066CC" text-anchor="middle" font-family="Arial, sans-serif">3</text>
+  </g>
+
+  <g transform="translate(155, 60)">
+    <circle cx="0" cy="0" r="10" fill="#00D084" opacity="0.2"/>
+    <text x="0" y="3" font-size="12" font-weight="bold" fill="#00A854" text-anchor="middle" font-family="Arial, sans-serif">€</text>
+  </g>
+</svg>

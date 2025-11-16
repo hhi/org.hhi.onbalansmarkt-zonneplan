@@ -1,0 +1,18 @@
+{
+  "id": "zonneplan_load_balancing",
+  "uiQuickAction": false,
+  "title": {
+    "en": "Load Balancing Active",
+    "nl": "Load Balancing Actief"
+  },
+  "description": {
+    "en": "Indicates whether dynamic load balancing is currently active",
+    "nl": "Geeft aan of dynamic load balancing momenteel actief is"
+  },
+  "type": "boolean",
+  "insights": true,
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "icon": "/assets/capabilities/frank_energie_battery_charge.svg"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "zonneplan_daily_earned",
+  "uiQuickAction": false,
+  "title": {
+    "en": "Daily Earned",
+    "nl": "Dagelijkse Opbrengst"
+  },
+  "description": {
+    "en": "Daily battery earnings in euros (today only, resets at midnight)",
+    "nl": "Dagelijkse batterijopbrengst in euro (alleen vandaag, reset om middernacht)"
+  },
+  "type": "number",
+  "insights": true,
+  "getable": true,
+  "setable": false,
+  "units": "€",
+  "decimals": 2,
+  "chartType": "stepLine",
+  "uiComponent": "sensor",
+  "icon": "/assets/capabilities/frank_energie_trading_result.svg"
+}

@@ -1,0 +1,30 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#6C5CE7" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Clock with refresh indicator -->
+  <g transform="translate(100, 100) scale(1.05)">
+    <!-- Main clock circle -->
+    <circle cx="0" cy="0" r="22" fill="none" stroke="#6C5CE7" stroke-width="2"/>
+
+    <!-- Clock hands -->
+    <line x1="0" y1="0" x2="0" y2="-14" stroke="#6C5CE7" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="0" y1="0" x2="12" y2="6" stroke="#6C5CE7" stroke-width="1" stroke-linecap="round"/>
+
+    <!-- Center dot -->
+    <circle cx="0" cy="0" r="2" fill="#6C5CE7"/>
+
+    <!-- Refresh arc (curved arrow) -->
+    <path d="M 18 -15 A 24 24 0 0 1 -18 -15" fill="none" stroke="#6C5CE7" stroke-width="2.5" stroke-linecap="round"/>
+
+    <!-- Arrow head on refresh arc -->
+    <path d="M -18 -15 L -22 -8 L -15 -17" fill="#6C5CE7" stroke="none"/>
+  </g>
+
+  <!-- Countdown time display -->
+  <g transform="translate(100, 155) scale(1.05)">
+    <rect x="-22" y="-8" width="44" height="18" rx="3" fill="#6C5CE7" opacity="0.1" stroke="#6C5CE7" stroke-width="1"/>
+    <text x="-8" y="6" font-size="12" font-weight="bold" fill="#6C5CE7" text-anchor="middle" font-family="Arial, sans-serif">5m</text>
+    <text x="10" y="4" font-size="8" font-weight="600" fill="#6C5CE7" text-anchor="start" font-family="Arial, sans-serif">left</text>
+  </g>
+</svg>

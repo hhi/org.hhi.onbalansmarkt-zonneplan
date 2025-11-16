@@ -1,0 +1,11 @@
+node_modules/
+.homeybuild/
+.homeybuild*/
+build
+env.json
+roadmap.txt
+/.vscode/
+zzz_*
+todo/
+graphql/
+.claude/settings.local.json

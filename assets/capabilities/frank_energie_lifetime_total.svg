@@ -1,0 +1,16 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#00A854" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Sigma symbol for summation/total -->
+  <g transform="translate(100, 85) scale(1.05)">
+    <circle cx="0" cy="0" r="35" fill="#00A854" opacity="0.1"/>
+    <text x="0" y="18" font-size="60" font-weight="bold" fill="#00A854" text-anchor="middle" font-family="Arial, sans-serif">Σ</text>
+  </g>
+
+  <!-- Euro symbol at bottom -->
+  <g transform="translate(100, 160) scale(1.05)">
+    <circle cx="0" cy="0" r="18" fill="#FFB703" opacity="0.15"/>
+    <text x="0" y="6" font-size="22" font-weight="bold" fill="#00A854" text-anchor="middle" font-family="Arial, sans-serif">€</text>
+  </g>
+</svg>

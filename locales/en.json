@@ -1,0 +1,40 @@
+{
+  "pair": {
+    "zonneplan": {
+      "configure": {
+        "title": "Zonneplan Battery",
+        "subtitle": "Configure your Zonneplan battery for Onbalansmarkt integration",
+        "device_name": "Device Name",
+        "device_name.hint": "Choose a recognizable name for your battery",
+        "trading_mode": "Trading Mode",
+        "trading_mode.manual": "Manual",
+        "trading_mode.imbalance": "Imbalance",
+        "trading_mode.imbalance_aggressive": "Imbalance Aggressive",
+        "trading_mode.self_consumption_plus": "Self Consumption Plus",
+        "trading_mode.hint": "Select the trading mode for Onbalansmarkt integration"
+      },
+      "api_key": {
+        "title": "Onbalansmarkt Integration",
+        "subtitle": "Optional: enter your Onbalansmarkt API key to automatically send data",
+        "api_key": "API Key",
+        "api_key.hint": "Get an API key at https://onbalansmarkt.com (optional)",
+        "auto_send": "Auto-send measurements",
+        "auto_send.hint": "Automatically send battery data to Onbalansmarkt when received via flow card",
+        "error": {
+          "api_key_required": "API key is required when auto-send is enabled."
+        }
+      }
+    },
+    "buttons": {
+      "next": "Next",
+      "skip": "Skip",
+      "finish": "Finish"
+    }
+  },
+  "error": {
+    "validation": {
+      "title": "Validation Error",
+      "fields": "Please fill in all required fields."
+    }
+  }
+}

@@ -1,0 +1,15 @@
+<svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+  <!-- Onbalansmarkt Brand Logo - Icon Only -->
+  <!-- Teal circle with lightning bolt -->
+
+  <g transform="translate(500, 500)">
+    <!-- Teal background circle -->
+    <circle cx="0" cy="0" r="400" fill="none"/>
+
+    <!-- White lightning bolt - larger version -->
+    <g fill="#ffffff" transform="scale(2, 2)">
+      <!-- Single path lightning bolt -->
+      <path d="M 40 -280 L -60 -40 L 20 -40 L 20 20 L -80 300 L 80 60 L 0 60 L 0 -20 L 100 -280 Z"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,589 @@
+{
+  "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
+  "id": "org.hhi.onbalansmarkt-zonneplan",
+  "version": "0.1.0",
+  "compatibility": ">=12.4.0",
+  "sdk": 3,
+  "platforms": [
+    "local"
+  ],
+  "name": {
+    "en": "Onbalansmarkt Zonneplan Battery",
+    "nl": "Onbalansmarkt Zonneplan Batterij"
+  },
+  "description": {
+    "en": "Delivers Zonneplan battery trading results to onbalansmarkt.com",
+    "nl": "Levert Zonneplan batterij handelsresultaten aan onbalansmarkt.com"
+  },
+  "category": [
+    "energy"
+  ],
+  "permissions": [],
+  "images": {
+    "small": "/assets/images/onbalansmarkt_250x175.png",
+    "large": "/assets/images/onbalansmarkt_500x350.png",
+    "xlarge": "/assets/images/onbalansmarkt_1000x700.png"
+  },
+  "author": {
+    "name": "H Hi",
+    "email": "iphone.HHi@me.com"
+  },
+  "brandColor": "#00b8a9",
+  "icon": "/assets/icon.svg",
+  "support": "mailto:iphone.HHi@me.com",
+  "source": "https://github.com/hhi/org.hhi.onbalansmarkt-zonneplan",
+  "homepageUrl": "https://onbalansmarkt.com/help",
+  "bugs": {
+    "url": "https://github.com/hhi/org.hhi.onbalansmarkt-zonneplan/issues"
+  },
+  "tags": {
+    "nl": [
+      "thuisbatterij",
+      "onbalansmarkt",
+      "Zonneplan"
+    ],
+    "en": [
+      "home battery",
+      "imbalance market",
+      "Zonneplan"
+    ]
+  },
+  "locales": [
+    "en",
+    "nl"
+  ],
+  "flow": {
+    "triggers": [
+      {
+        "id": "zonneplan_metrics_updated",
+        "title": {
+          "en": "Battery metrics updated",
+          "nl": "Batterij metrieken bijgewerkt"
+        },
+        "hint": {
+          "en": "Triggered when new battery metrics are received from Zonneplan",
+          "nl": "Getriggerd wanneer nieuwe batterijgegevens van Zonneplan ontvangen zijn"
+        },
+        "tokens": [
+          {
+            "name": "daily_earned",
+            "type": "number",
+            "title": {
+              "en": "Daily earned",
+              "nl": "Dagelijks verdiend"
+            },
+            "example": 1.23
+          },
+          {
+            "name": "total_earned",
+            "type": "number",
+            "title": {
+              "en": "Total earned",
+              "nl": "Totaal verdiend"
+            },
+            "example": 123.45
+          },
+          {
+            "name": "daily_charged",
+            "type": "number",
+            "title": {
+              "en": "Daily charged",
+              "nl": "Dagelijks geladen"
+            },
+            "example": 5.67
+          },
+          {
+            "name": "daily_discharged",
+            "type": "number",
+            "title": {
+              "en": "Daily discharged",
+              "nl": "Dagelijks geleverd"
+            },
+            "example": 4.32
+          },
+          {
+            "name": "battery_percentage",
+            "type": "number",
+            "title": {
+              "en": "Battery percentage",
+              "nl": "Batterij percentage"
+            },
+            "example": 75
+          },
+          {
+            "name": "cycle_count",
+            "type": "number",
+            "title": {
+              "en": "Cycle count",
+              "nl": "Aantal cycli"
+            },
+            "example": 42
+          },
+          {
+            "name": "load_balancing_active",
+            "type": "boolean",
+            "title": {
+              "en": "Load balancing active",
+              "nl": "Load balancing actief"
+            },
+            "example": true
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "receive_zonneplan_metrics",
+        "title": {
+          "en": "Receive Zonneplan battery metrics",
+          "nl": "Ontvang Zonneplan batterij metrieken"
+        },
+        "titleFormatted": {
+          "en": "Receive metrics: €[[daily_earned]] today (€[[total_earned]] total), [[daily_charged]] kWh charged, [[daily_discharged]] kWh discharged, battery [[battery_percentage]]%, [[cycle_count]] cycles, load balancing [[load_balancing_active]], time [[timestamp]]",
+          "nl": "Ontvang metrieken: €[[daily_earned]] vandaag (€[[total_earned]] totaal), [[daily_charged]] kWh geladen, [[daily_discharged]] kWh geleverd, batterij [[battery_percentage]]%, [[cycle_count]] cycli, load balancing [[load_balancing_active]], tijd [[timestamp]]"
+        },
+        "hint": {
+          "en": "Receives battery metrics from Zonneplan battery and optionally sends to Onbalansmarkt.com. Use this action card in a flow triggered by Zonneplan battery data updates.",
+          "nl": "Ontvangt batterijgegevens van Zonneplan batterij en stuurt optioneel naar Onbalansmarkt.com. Gebruik deze actie kaart in een flow die getriggerd wordt door Zonneplan batterij data updates."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=zonneplan-battery"
+          },
+          {
+            "name": "daily_earned",
+            "type": "number",
+            "title": {
+              "en": "Daily earned (€)",
+              "nl": "Dagelijks verdiend (€)"
+            },
+            "placeholder": {
+              "en": "Today's earnings in euros",
+              "nl": "Vandaag verdiend in euro"
+            },
+            "required": true,
+            "min": 0
+          },
+          {
+            "name": "total_earned",
+            "type": "number",
+            "title": {
+              "en": "Total earned (€)",
+              "nl": "Totaal verdiend (€)"
+            },
+            "placeholder": {
+              "en": "Lifetime earnings in euros",
+              "nl": "Totaal verdiend in euro"
+            },
+            "required": true,
+            "min": 0
+          },
+          {
+            "name": "daily_charged",
+            "type": "number",
+            "title": {
+              "en": "Daily charged (kWh)",
+              "nl": "Dagelijks geladen (kWh)"
+            },
+            "placeholder": {
+              "en": "Today's charged kWh",
+              "nl": "Vandaag geladen kWh"
+            },
+            "required": true,
+            "min": 0
+          },
+          {
+            "name": "daily_discharged",
+            "type": "number",
+            "title": {
+              "en": "Daily discharged (kWh)",
+              "nl": "Dagelijks geleverd (kWh)"
+            },
+            "placeholder": {
+              "en": "Today's discharged kWh",
+              "nl": "Vandaag geleverd kWh"
+            },
+            "required": true,
+            "min": 0
+          },
+          {
+            "name": "battery_percentage",
+            "type": "range",
+            "title": {
+              "en": "Battery percentage",
+              "nl": "Batterij percentage"
+            },
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "%",
+            "required": true
+          },
+          {
+            "name": "cycle_count",
+            "type": "number",
+            "title": {
+              "en": "Cycle count",
+              "nl": "Aantal cycli"
+            },
+            "placeholder": {
+              "en": "Total charge cycles",
+              "nl": "Totaal aantal cycli"
+            },
+            "required": false,
+            "min": 0
+          },
+          {
+            "name": "load_balancing_active",
+            "type": "checkbox",
+            "title": {
+              "en": "Load balancing active",
+              "nl": "Load balancing actief"
+            },
+            "required": false
+          },
+          {
+            "name": "timestamp",
+            "type": "text",
+            "title": {
+              "en": "Timestamp",
+              "nl": "Tijdstempel"
+            },
+            "placeholder": {
+              "en": "ISO 8601 format (optional)",
+              "nl": "ISO 8601 formaat (optioneel)"
+            },
+            "required": false
+          }
+        ]
+      }
+    ]
+  },
+  "drivers": [
+    {
+      "name": {
+        "en": "Zonneplan Battery",
+        "nl": "Zonneplan Batterij"
+      },
+      "class": "battery",
+      "capabilities": [
+        "measure_battery",
+        "zonneplan_daily_earned",
+        "zonneplan_total_earned",
+        "zonneplan_daily_charged",
+        "zonneplan_daily_discharged",
+        "zonneplan_cycle_count",
+        "zonneplan_load_balancing",
+        "zonneplan_last_update"
+      ],
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [],
+      "energy": {
+        "batteries": [
+          "INTERNAL"
+        ]
+      },
+      "images": {
+        "small": "/drivers/zonneplan-battery/assets/images/small.png",
+        "large": "/drivers/zonneplan-battery/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "configure"
+        },
+        {
+          "id": "api_key"
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "id": "zonneplan-battery",
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Device Configuration",
+            "nl": "Apparaat Configuratie"
+          },
+          "children": [
+            {
+              "id": "device_name",
+              "type": "text",
+              "label": {
+                "en": "Device Name",
+                "nl": "Apparaatnaam"
+              },
+              "value": "Zonneplan Battery",
+              "hint": {
+                "en": "Display name for this battery device",
+                "nl": "Weergavenaam voor dit batterijapparaat"
+              }
+            },
+            {
+              "id": "trading_mode",
+              "type": "dropdown",
+              "label": {
+                "en": "Trading Mode",
+                "nl": "Handelsmodus"
+              },
+              "value": "manual",
+              "values": [
+                {
+                  "id": "imbalance",
+                  "label": {
+                    "en": "Imbalance",
+                    "nl": "Onbalans"
+                  }
+                },
+                {
+                  "id": "imbalance_aggressive",
+                  "label": {
+                    "en": "Imbalance Aggressive",
+                    "nl": "Onbalans Agressief"
+                  }
+                },
+                {
+                  "id": "self_consumption_plus",
+                  "label": {
+                    "en": "Self Consumption Plus",
+                    "nl": "Eigen Verbruik Plus"
+                  }
+                },
+                {
+                  "id": "manual",
+                  "label": {
+                    "en": "Manual",
+                    "nl": "Handmatig"
+                  }
+                }
+              ],
+              "hint": {
+                "en": "Select the trading mode for Onbalansmarkt integration",
+                "nl": "Selecteer de handelsmodus voor Onbalansmarkt integratie"
+              }
+            },
+            {
+              "id": "total_earned_offset",
+              "type": "number",
+              "label": {
+                "en": "Total Earned Offset (€)",
+                "nl": "Totaal Verdiend Correctie (€)"
+              },
+              "value": 0,
+              "decimals": 2,
+              "hint": {
+                "en": "Manual offset to add to lifetime total earnings (e.g., to correct starting value)",
+                "nl": "Handmatige correctie om toe te voegen aan totale opbrengst (bijv. om startwaarde te corrigeren)"
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Onbalansmarkt Integration",
+            "nl": "Onbalansmarkt Integratie"
+          },
+          "children": [
+            {
+              "id": "onbalansmarkt_api_key",
+              "type": "password",
+              "label": {
+                "en": "API Key",
+                "nl": "API-sleutel"
+              },
+              "value": "",
+              "hint": {
+                "en": "Your Onbalansmarkt.com API key (optional). Get one at https://onbalansmarkt.com",
+                "nl": "Uw Onbalansmarkt.com API-sleutel (optioneel). Verkrijg er een op https://onbalansmarkt.com"
+              }
+            },
+            {
+              "id": "auto_send_measurements",
+              "type": "checkbox",
+              "label": {
+                "en": "Auto-send measurements",
+                "nl": "Automatisch metingen versturen"
+              },
+              "value": false,
+              "hint": {
+                "en": "Automatically send battery data to Onbalansmarkt.com when received via flow card (requires API key)",
+                "nl": "Automatisch batterijgegevens versturen naar Onbalansmarkt.com bij ontvangst via flow card (vereist API-sleutel)"
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Energy Dashboard",
+            "nl": "Energie Dashboard"
+          },
+          "children": [
+            {
+              "id": "exclude_from_energy",
+              "type": "checkbox",
+              "label": {
+                "en": "Exclude from Energy",
+                "nl": "Uitsluiten van Energie"
+              },
+              "value": true,
+              "hint": {
+                "en": "Exclude this device from the Homey Energy dashboard",
+                "nl": "Dit apparaat uitsluiten van het Homey Energie dashboard"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "capabilities": {
+    "zonneplan_cycle_count": {
+      "id": "zonneplan_cycle_count",
+      "uiQuickAction": false,
+      "title": {
+        "en": "Cycle Count",
+        "nl": "Aantal Cycli"
+      },
+      "description": {
+        "en": "Total number of battery charge/discharge cycles",
+        "nl": "Totaal aantal laad/ontlaadcycli van de batterij"
+      },
+      "type": "number",
+      "insights": true,
+      "getable": true,
+      "setable": false,
+      "decimals": 0,
+      "chartType": "spline",
+      "uiComponent": "sensor",
+      "icon": "/assets/capabilities/external_battery_count.svg"
+    },
+    "zonneplan_daily_charged": {
+      "id": "zonneplan_daily_charged",
+      "uiQuickAction": false,
+      "title": {
+        "en": "Daily Charged",
+        "nl": "Dagelijks Geladen"
+      },
+      "description": {
+        "en": "Daily energy charged to battery in kWh (today only, resets at midnight)",
+        "nl": "Dagelijks aan batterij toegevoerde energie in kWh (alleen vandaag, reset om middernacht)"
+      },
+      "type": "number",
+      "insights": true,
+      "getable": true,
+      "setable": false,
+      "units": "kWh",
+      "decimals": 2,
+      "chartType": "stepLine",
+      "uiComponent": "sensor",
+      "icon": "/assets/capabilities/external_battery_daily_charged.svg"
+    },
+    "zonneplan_daily_discharged": {
+      "id": "zonneplan_daily_discharged",
+      "uiQuickAction": false,
+      "title": {
+        "en": "Daily Discharged",
+        "nl": "Dagelijks Geleverd"
+      },
+      "description": {
+        "en": "Daily energy discharged from battery in kWh (today only, resets at midnight)",
+        "nl": "Dagelijks door batterij geleverde energie in kWh (alleen vandaag, reset om middernacht)"
+      },
+      "type": "number",
+      "insights": true,
+      "getable": true,
+      "setable": false,
+      "units": "kWh",
+      "decimals": 2,
+      "chartType": "stepLine",
+      "uiComponent": "sensor",
+      "icon": "/assets/capabilities/external_battery_daily_discharged.svg"
+    },
+    "zonneplan_daily_earned": {
+      "id": "zonneplan_daily_earned",
+      "uiQuickAction": false,
+      "title": {
+        "en": "Daily Earned",
+        "nl": "Dagelijkse Opbrengst"
+      },
+      "description": {
+        "en": "Daily battery earnings in euros (today only, resets at midnight)",
+        "nl": "Dagelijkse batterijopbrengst in euro (alleen vandaag, reset om middernacht)"
+      },
+      "type": "number",
+      "insights": true,
+      "getable": true,
+      "setable": false,
+      "units": "€",
+      "decimals": 2,
+      "chartType": "stepLine",
+      "uiComponent": "sensor",
+      "icon": "/assets/capabilities/frank_energie_trading_result.svg"
+    },
+    "zonneplan_last_update": {
+      "id": "zonneplan_last_update",
+      "uiQuickAction": false,
+      "title": {
+        "en": "Last Update",
+        "nl": "Laatste Update"
+      },
+      "description": {
+        "en": "Timestamp of the last received battery metrics",
+        "nl": "Tijdstempel van de laatst ontvangen batterijgegevens"
+      },
+      "type": "string",
+      "insights": false,
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "icon": "/assets/capabilities/frank_energie_next_poll_minutes.svg"
+    },
+    "zonneplan_load_balancing": {
+      "id": "zonneplan_load_balancing",
+      "uiQuickAction": false,
+      "title": {
+        "en": "Load Balancing Active",
+        "nl": "Load Balancing Actief"
+      },
+      "description": {
+        "en": "Indicates whether dynamic load balancing is currently active",
+        "nl": "Geeft aan of dynamic load balancing momenteel actief is"
+      },
+      "type": "boolean",
+      "insights": true,
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "icon": "/assets/capabilities/frank_energie_battery_charge.svg"
+    },
+    "zonneplan_total_earned": {
+      "id": "zonneplan_total_earned",
+      "uiQuickAction": false,
+      "title": {
+        "en": "Total Earned",
+        "nl": "Totaal Verdiend"
+      },
+      "description": {
+        "en": "Lifetime total battery earnings in euros",
+        "nl": "Totale batterijopbrengst in euro sinds installatie"
+      },
+      "type": "number",
+      "insights": true,
+      "getable": true,
+      "setable": false,
+      "units": "€",
+      "decimals": 2,
+      "chartType": "spline",
+      "uiComponent": "sensor",
+      "icon": "/assets/capabilities/frank_energie_lifetime_total.svg"
+    }
+  }
+}

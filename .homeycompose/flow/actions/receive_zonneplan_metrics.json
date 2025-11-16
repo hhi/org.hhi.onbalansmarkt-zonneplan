@@ -1,0 +1,127 @@
+{
+  "id": "receive_zonneplan_metrics",
+  "title": {
+    "en": "Receive Zonneplan battery metrics",
+    "nl": "Ontvang Zonneplan batterij metrieken"
+  },
+  "titleFormatted": {
+    "en": "Receive metrics: €[[daily_earned]] today (€[[total_earned]] total), [[daily_charged]] kWh charged, [[daily_discharged]] kWh discharged, battery [[battery_percentage]]%, [[cycle_count]] cycles, load balancing [[load_balancing_active]], time [[timestamp]]",
+    "nl": "Ontvang metrieken: €[[daily_earned]] vandaag (€[[total_earned]] totaal), [[daily_charged]] kWh geladen, [[daily_discharged]] kWh geleverd, batterij [[battery_percentage]]%, [[cycle_count]] cycli, load balancing [[load_balancing_active]], tijd [[timestamp]]"
+  },
+  "hint": {
+    "en": "Receives battery metrics from Zonneplan battery and optionally sends to Onbalansmarkt.com. Use this action card in a flow triggered by Zonneplan battery data updates.",
+    "nl": "Ontvangt batterijgegevens van Zonneplan batterij en stuurt optioneel naar Onbalansmarkt.com. Gebruik deze actie kaart in een flow die getriggerd wordt door Zonneplan batterij data updates."
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=zonneplan-battery"
+    },
+    {
+      "name": "daily_earned",
+      "type": "number",
+      "title": {
+        "en": "Daily earned (€)",
+        "nl": "Dagelijks verdiend (€)"
+      },
+      "placeholder": {
+        "en": "Today's earnings in euros",
+        "nl": "Vandaag verdiend in euro"
+      },
+      "required": true,
+      "min": 0
+    },
+    {
+      "name": "total_earned",
+      "type": "number",
+      "title": {
+        "en": "Total earned (€)",
+        "nl": "Totaal verdiend (€)"
+      },
+      "placeholder": {
+        "en": "Lifetime earnings in euros",
+        "nl": "Totaal verdiend in euro"
+      },
+      "required": true,
+      "min": 0
+    },
+    {
+      "name": "daily_charged",
+      "type": "number",
+      "title": {
+        "en": "Daily charged (kWh)",
+        "nl": "Dagelijks geladen (kWh)"
+      },
+      "placeholder": {
+        "en": "Today's charged kWh",
+        "nl": "Vandaag geladen kWh"
+      },
+      "required": true,
+      "min": 0
+    },
+    {
+      "name": "daily_discharged",
+      "type": "number",
+      "title": {
+        "en": "Daily discharged (kWh)",
+        "nl": "Dagelijks geleverd (kWh)"
+      },
+      "placeholder": {
+        "en": "Today's discharged kWh",
+        "nl": "Vandaag geleverd kWh"
+      },
+      "required": true,
+      "min": 0
+    },
+    {
+      "name": "battery_percentage",
+      "type": "range",
+      "title": {
+        "en": "Battery percentage",
+        "nl": "Batterij percentage"
+      },
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "label": "%",
+      "required": true
+    },
+    {
+      "name": "cycle_count",
+      "type": "number",
+      "title": {
+        "en": "Cycle count",
+        "nl": "Aantal cycli"
+      },
+      "placeholder": {
+        "en": "Total charge cycles",
+        "nl": "Totaal aantal cycli"
+      },
+      "required": false,
+      "min": 0
+    },
+    {
+      "name": "load_balancing_active",
+      "type": "checkbox",
+      "title": {
+        "en": "Load balancing active",
+        "nl": "Load balancing actief"
+      },
+      "required": false
+    },
+    {
+      "name": "timestamp",
+      "type": "text",
+      "title": {
+        "en": "Timestamp",
+        "nl": "Tijdstempel"
+      },
+      "placeholder": {
+        "en": "ISO 8601 format (optional)",
+        "nl": "ISO 8601 formaat (optioneel)"
+      },
+      "required": false
+    }
+  ]
+}

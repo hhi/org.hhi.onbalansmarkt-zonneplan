@@ -1,0 +1,76 @@
+{
+  "id": "zonneplan_metrics_updated",
+  "title": {
+    "en": "Battery metrics updated",
+    "nl": "Batterij metrieken bijgewerkt"
+  },
+  "hint": {
+    "en": "Triggered when new battery metrics are received from Zonneplan",
+    "nl": "Getriggerd wanneer nieuwe batterijgegevens van Zonneplan ontvangen zijn"
+  },
+  "tokens": [
+    {
+      "name": "daily_earned",
+      "type": "number",
+      "title": {
+        "en": "Daily earned",
+        "nl": "Dagelijks verdiend"
+      },
+      "example": 1.23
+    },
+    {
+      "name": "total_earned",
+      "type": "number",
+      "title": {
+        "en": "Total earned",
+        "nl": "Totaal verdiend"
+      },
+      "example": 123.45
+    },
+    {
+      "name": "daily_charged",
+      "type": "number",
+      "title": {
+        "en": "Daily charged",
+        "nl": "Dagelijks geladen"
+      },
+      "example": 5.67
+    },
+    {
+      "name": "daily_discharged",
+      "type": "number",
+      "title": {
+        "en": "Daily discharged",
+        "nl": "Dagelijks geleverd"
+      },
+      "example": 4.32
+    },
+    {
+      "name": "battery_percentage",
+      "type": "number",
+      "title": {
+        "en": "Battery percentage",
+        "nl": "Batterij percentage"
+      },
+      "example": 75
+    },
+    {
+      "name": "cycle_count",
+      "type": "number",
+      "title": {
+        "en": "Cycle count",
+        "nl": "Aantal cycli"
+      },
+      "example": 42
+    },
+    {
+      "name": "load_balancing_active",
+      "type": "boolean",
+      "title": {
+        "en": "Load balancing active",
+        "nl": "Load balancing actief"
+      },
+      "example": true
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="batteryFill" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#00D084;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00A854;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#00D084" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Battery outline - moved up, scaled for better visibility -->
+  <g transform="translate(100, 85) scale(1.15)">
+    <!-- Battery body -->
+    <rect x="-28" y="-35" width="52" height="70" rx="3" fill="none" stroke="#00A8E8" stroke-width="2.5"/>
+
+    <!-- Battery terminal -->
+    <rect x="-12" y="-42" width="24" height="8" rx="1" fill="#0066CC" opacity="0.5" stroke="#0066CC" stroke-width="1"/>
+
+    <!-- Charge fill -->
+    <rect x="-26" y="-33" width="50" height="66" rx="2" fill="url(#batteryFill)" opacity="0.3"/>
+    <rect x="-26" y="15" width="50" height="18" rx="2" fill="url(#batteryFill)"/>
+  </g>
+
+  <!-- Percentage text - positioned below battery -->
+  <g transform="translate(100, 165)">
+    <text x="0" y="0" font-size="18" font-weight="bold" fill="#00A854" text-anchor="middle" font-family="Arial, sans-serif">75%</text>
+  </g>
+
+  <!-- Charge level indicator -->
+  <circle cx="170" cy="60" r="14" fill="#00D084" opacity="0.2"/>
+  <text x="170" y="66" font-size="12" font-weight="bold" fill="#00A854" text-anchor="middle" font-family="Arial, sans-serif">+</text>
+</svg>

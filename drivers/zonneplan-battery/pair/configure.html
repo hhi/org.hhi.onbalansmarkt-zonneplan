@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zonneplan Batterij</title>
+</head>
+<body>
+  <homey-pair>
+    <h1 data-i18n="pair.zonneplan.configure.title">Zonneplan Batterij</h1>
+    <p data-i18n="pair.zonneplan.configure.subtitle">Configureer je Zonneplan batterij voor Onbalansmarkt integratie</p>
+
+    <form class="homey-form">
+      <div class="homey-form-group">
+        <label class="homey-form-label" for="deviceName" data-i18n="pair.zonneplan.configure.device_name">Apparaatnaam</label>
+        <input id="deviceName" type="text" required class="homey-form-input" placeholder="Zonneplan Battery" value="Zonneplan Battery" />
+        <small class="homey-form-hint" data-i18n="pair.zonneplan.configure.device_name.hint">Kies een herkenbare naam voor je batterij</small>
+      </div>
+
+      <div class="homey-form-group">
+        <label class="homey-form-label" for="tradingMode" data-i18n="pair.zonneplan.configure.trading_mode">Handelsmodus</label>
+        <select id="tradingMode" required class="homey-form-input">
+          <option value="manual" data-i18n="pair.zonneplan.configure.trading_mode.manual">Handmatig</option>
+          <option value="imbalance" data-i18n="pair.zonneplan.configure.trading_mode.imbalance">Onbalans</option>
+          <option value="imbalance_aggressive" data-i18n="pair.zonneplan.configure.trading_mode.imbalance_aggressive">Onbalans Agressief</option>
+          <option value="self_consumption_plus" data-i18n="pair.zonneplan.configure.trading_mode.self_consumption_plus">Eigen Verbruik Plus</option>
+        </select>
+        <small class="homey-form-hint" data-i18n="pair.zonneplan.configure.trading_mode.hint">Selecteer de handelsmodus voor Onbalansmarkt integratie</small>
+      </div>
+
+      <button type="submit" class="button positive" data-i18n="pair.buttons.next">Volgende</button>
+    </form>
+  </homey-pair>
+
+  <script>
+    Homey.setTitle(Homey.__('pair.zonneplan.configure.title'));
+
+    const form = document.querySelector('form');
+    const deviceNameInput = document.getElementById('deviceName');
+    const tradingModeSelect = document.getElementById('tradingMode');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const deviceName = deviceNameInput.value.trim();
+      const tradingMode = tradingModeSelect.value;
+
+      if (!deviceName || !tradingMode) {
+        Homey.showDialog('error', {
+          title: Homey.__('error.validation.title'),
+          body: Homey.__('error.validation.fields'),
+        });
+        return;
+      }
+
+      try {
+        // Store configuration data
+        await Homey.emit('store_config', {
+          deviceName,
+          tradingMode,
+        });
+
+        // Navigate to API key view
+        Homey.nextView();
+      } catch (error) {
+        Homey.showDialog('error', {
+          title: 'Configuration Error',
+          body: error.message || 'Failed to store configuration.',
+        });
+      }
+    });
+
+    deviceNameInput.focus();
+  </script>
+</body>
+</html>

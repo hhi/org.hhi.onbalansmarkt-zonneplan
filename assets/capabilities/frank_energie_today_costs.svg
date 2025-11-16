@@ -1,0 +1,34 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#FF6B6B" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Calendar page -->
+  <g transform="translate(85, 75) scale(1.05)">
+    <!-- Calendar frame -->
+    <rect x="0" y="0" width="30" height="32" rx="2" fill="none" stroke="#FF6B6B" stroke-width="2"/>
+
+    <!-- Calendar header -->
+    <rect x="0" y="0" width="30" height="6" rx="2" fill="#FF6B6B" opacity="0.2"/>
+
+    <!-- Date number -->
+    <text x="15" y="22" font-size="12" font-weight="bold" fill="#FF6B6B" text-anchor="middle" font-family="Arial, sans-serif">24</text>
+  </g>
+
+  <!-- Clock indicator (today) -->
+  <g transform="translate(120, 75) scale(1.05)">
+    <circle cx="0" cy="0" r="12" fill="none" stroke="#FF6B6B" stroke-width="1.5" opacity="0.5"/>
+    <line x1="0" y1="-8" x2="0" y2="-4" stroke="#FF6B6B" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="0" y1="0" x2="7" y2="0" stroke="#FF6B6B" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+
+  <!-- Euro symbol -->
+  <g transform="translate(100, 130) scale(1.05)">
+    <circle cx="0" cy="0" r="18" fill="#FF6B6B" opacity="0.15"/>
+    <text x="0" y="6" font-size="20" font-weight="bold" fill="#FF6B6B" text-anchor="middle" font-family="Arial, sans-serif">€</text>
+  </g>
+
+  <!-- Cost lines -->
+  <g stroke="#FF6B6B" stroke-width="1.5" opacity="0.4">
+    <line x1="60" y1="155" x2="140" y2="155" stroke-dasharray="2,2"/>
+  </g>
+</svg>

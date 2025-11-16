@@ -1,0 +1,20 @@
+{
+  "id": "zonneplan_cycle_count",
+  "uiQuickAction": false,
+  "title": {
+    "en": "Cycle Count",
+    "nl": "Aantal Cycli"
+  },
+  "description": {
+    "en": "Total number of battery charge/discharge cycles",
+    "nl": "Totaal aantal laad/ontlaadcycli van de batterij"
+  },
+  "type": "number",
+  "insights": true,
+  "getable": true,
+  "setable": false,
+  "decimals": 0,
+  "chartType": "spline",
+  "uiComponent": "sensor",
+  "icon": "/assets/capabilities/external_battery_count.svg"
+}

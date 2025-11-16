@@ -1,0 +1,21 @@
+{
+  "id": "zonneplan_daily_discharged",
+  "uiQuickAction": false,
+  "title": {
+    "en": "Daily Discharged",
+    "nl": "Dagelijks Geleverd"
+  },
+  "description": {
+    "en": "Daily energy discharged from battery in kWh (today only, resets at midnight)",
+    "nl": "Dagelijks door batterij geleverde energie in kWh (alleen vandaag, reset om middernacht)"
+  },
+  "type": "number",
+  "insights": true,
+  "getable": true,
+  "setable": false,
+  "units": "kWh",
+  "decimals": 2,
+  "chartType": "stepLine",
+  "uiComponent": "sensor",
+  "icon": "/assets/capabilities/external_battery_daily_discharged.svg"
+}
