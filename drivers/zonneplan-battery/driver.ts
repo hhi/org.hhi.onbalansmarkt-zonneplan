@@ -12,8 +12,8 @@ export = class ZonneplanBatteryDriver extends Homey.Driver {
   }
 
   /**
-   * Handle pairing - simplified flow for virtual device
-   * User provides device name, trading mode, and optional Onbalansmarkt API key
+   * Handle pairing - combined form for virtual device
+   * User provides device name, trading mode (default: manual), and Onbalansmarkt API key (required)
    */
   async onPair(session: Homey.Driver.PairSession) {
     // Session store for configuration
@@ -29,25 +29,23 @@ export = class ZonneplanBatteryDriver extends Homey.Driver {
       autoSend: false,
     };
 
-    // Store device configuration from configure view
+    // Store all configuration from combined form
     session.setHandler('store_config', async (data: {
       deviceName: string;
       tradingMode: string;
-    }) => {
-      pairingData.deviceName = data.deviceName;
-      pairingData.tradingMode = data.tradingMode;
-      this.log('Configuration stored:', data);
-      return true;
-    });
-
-    // Store API key from api_key view
-    session.setHandler('store_api_key', async (data: {
       apiKey: string;
       autoSend: boolean;
     }) => {
+      pairingData.deviceName = data.deviceName;
+      pairingData.tradingMode = data.tradingMode || 'manual'; // Default to manual
       pairingData.apiKey = data.apiKey || '';
-      pairingData.autoSend = data.autoSend;
-      this.log('API key stored (length:', pairingData.apiKey.length, '), auto-send:', pairingData.autoSend);
+      pairingData.autoSend = data.autoSend || false; // Default to false
+      this.log('Configuration stored:', {
+        deviceName: pairingData.deviceName,
+        tradingMode: pairingData.tradingMode,
+        apiKeyLength: pairingData.apiKey.length,
+        autoSend: pairingData.autoSend,
+      });
       return true;
     });
 
@@ -70,6 +68,9 @@ export = class ZonneplanBatteryDriver extends Homey.Driver {
             onbalansmarkt_api_key: pairingData.apiKey,
             auto_send_measurements: pairingData.autoSend,
             exclude_from_energy: true,
+            measurements_send_enabled: false, // Default to disabled
+            measurements_send_interval: 60, // Default to 60 minutes
+            measurements_send_start_minute: 0, // Default to start of hour
           },
         },
       ];
