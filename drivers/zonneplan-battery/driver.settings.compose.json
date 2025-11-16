@@ -110,6 +110,22 @@
           "en": "Automatically send battery data to Onbalansmarkt.com when received via flow card (requires API key)",
           "nl": "Automatisch batterijgegevens versturen naar Onbalansmarkt.com bij ontvangst via flow card (vereist API-sleutel)"
         }
+      },
+      {
+        "id": "onbalansmarkt_poll_interval",
+        "type": "number",
+        "label": {
+          "en": "Poll Interval (seconds)",
+          "nl": "Poll Interval (seconden)"
+        },
+        "value": 300,
+        "min": 60,
+        "max": 3600,
+        "decimals": 0,
+        "hint": {
+          "en": "How often to fetch ranking data from Onbalansmarkt (requires API key). Minimum 60 seconds, maximum 1 hour",
+          "nl": "Hoe vaak ranglijstgegevens van Onbalansmarkt worden opgehaald (vereist API-sleutel). Minimum 60 seconden, maximum 1 uur"
+        }
       }
     ]
   },

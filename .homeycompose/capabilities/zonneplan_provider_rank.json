@@ -1,0 +1,17 @@
+{
+  "id": "zonneplan_provider_rank",
+  "type": "number",
+  "title": {
+    "en": "Provider Rank",
+    "nl": "Leverancier Positie"
+  },
+  "desc": {
+    "en": "User's ranking position among Zonneplan users on Onbalansmarkt",
+    "nl": "Positie van de gebruiker onder Zonneplan gebruikers op Onbalansmarkt"
+  },
+  "icon": "/assets/capabilities/frank_energie_provider_rank.svg",
+  "min": 1,
+  "decimals": 0,
+  "getable": true,
+  "setable": false
+}

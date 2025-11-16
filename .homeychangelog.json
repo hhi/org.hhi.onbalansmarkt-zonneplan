@@ -1,4 +1,8 @@
 {
+  "0.3.0": {
+    "en": "Added Onbalansmarkt profile polling for user rankings (overall rank and provider rank). Configurable poll interval for automatic ranking updates.",
+    "nl": "Polling van Onbalansmarkt profielgegevens voor gebruikersranglijsten (algehele positie en leverancier positie) toegevoegd. Configureerbare poll interval voor automatische ranglijstupdates."
+  },
   "0.2.0": {
     "en": "Fixed linting errors, added skip zero results setting, improved asset structure. Removed unused Frank Energie assets, added onUninit() cleanup handler, updated documentation.",
     "nl": "Linting fouten opgelost, instelling voor nulresultaten toegevoegd, verbeterde assetstructuur. Ongebruikte Frank Energie-assets verwijderd, onUninit() cleanup handler toegevoegd, documentatie bijgewerkt."

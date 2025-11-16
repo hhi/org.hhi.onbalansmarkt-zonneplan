@@ -36,5 +36,15 @@
       "title": "Validatiefout",
       "fields": "Vul alstublieft alle verplichte velden in."
     }
+  },
+  "capabilities": {
+    "zonneplan_overall_rank": {
+      "title": "Algehele Positie",
+      "desc": "Jouw positie in de algehele ranglijst op Onbalansmarkt"
+    },
+    "zonneplan_provider_rank": {
+      "title": "Leverancier Positie",
+      "desc": "Jouw positie onder Zonneplan gebruikers op Onbalansmarkt"
+    }
   }
 }

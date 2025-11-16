@@ -20,6 +20,7 @@ interface ZonneplanMetrics {
  */
 export = class ZonneplanBatteryDevice extends Homey.Device {
   private onbalansmarktClient: OnbalansmarktClient | null = null;
+  private profilePollerHandle: NodeJS.Timeout | null = null;
 
   async onInit() {
     this.log('ZonneplanBatteryDevice initialized');
@@ -32,6 +33,9 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
 
     // Initialize capabilities with default values if not set
     await this.initializeCapabilities();
+
+    // Start profile poller if API key is configured
+    this.startProfilePoller();
 
     this.log('Zonneplan Battery device ready');
   }
@@ -54,6 +58,72 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
   }
 
   /**
+   * Start polling for Onbalansmarkt profile data (rankings)
+   */
+  private startProfilePoller() {
+    // Stop existing poller if any
+    this.stopProfilePoller();
+
+    // Only start if API key is configured
+    if (!this.onbalansmarktClient) {
+      this.log('Onbalansmarkt client not available - profile polling disabled');
+      return;
+    }
+
+    // Get poll interval setting (default 300 seconds = 5 minutes)
+    const pollInterval = (this.getSetting('onbalansmarkt_poll_interval') || 300) * 1000;
+
+    // Fetch immediately on startup
+    this.fetchAndUpdateProfile();
+
+    // Then set up periodic polling
+    this.profilePollerHandle = this.homey.setInterval(async () => {
+      await this.fetchAndUpdateProfile();
+    }, pollInterval);
+
+    this.log(`Profile poller started with ${pollInterval / 1000}s interval`);
+  }
+
+  /**
+   * Stop profile poller
+   */
+  private stopProfilePoller() {
+    if (this.profilePollerHandle) {
+      this.homey.clearInterval(this.profilePollerHandle);
+      this.profilePollerHandle = null;
+      this.log('Profile poller stopped');
+    }
+  }
+
+  /**
+   * Fetch and update profile data from Onbalansmarkt
+   */
+  private async fetchAndUpdateProfile() {
+    if (!this.onbalansmarktClient) {
+      return;
+    }
+
+    try {
+      const profile = await this.onbalansmarktClient.getProfile();
+
+      // Update ranking capabilities with today's data
+      if (profile.resultToday) {
+        await this.setCapabilityValue('zonneplan_overall_rank', profile.resultToday.overallRank || 0);
+        await this.setCapabilityValue('zonneplan_provider_rank', profile.resultToday.providerRank || 0);
+      } else {
+        // No data yet for today
+        await this.setCapabilityValue('zonneplan_overall_rank', 0);
+        await this.setCapabilityValue('zonneplan_provider_rank', 0);
+      }
+
+      this.log('Profile data fetched and updated');
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+      this.error('Failed to fetch profile data:', errorMsg);
+    }
+  }
+
+  /**
    * Initialize capabilities with default values
    */
   private async initializeCapabilities() {
@@ -66,6 +136,8 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
       { name: 'zonneplan_cycle_count', value: 0 },
       { name: 'zonneplan_load_balancing', value: false },
       { name: 'zonneplan_last_update', value: 'Never' },
+      { name: 'zonneplan_overall_rank', value: 0 },
+      { name: 'zonneplan_provider_rank', value: 0 },
     ];
 
     for (const cap of capabilities) {
@@ -244,6 +316,13 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
     // Reinitialize Onbalansmarkt client if API key changed
     if (changedKeys.includes('onbalansmarkt_api_key')) {
       this.initializeOnbalansmarktClient();
+      this.startProfilePoller();
+    }
+
+    // Restart profile poller if poll interval changed
+    if (changedKeys.includes('onbalansmarkt_poll_interval')) {
+      this.log('Poll interval changed to:', newSettings.onbalansmarkt_poll_interval);
+      this.startProfilePoller();
     }
 
     // Log trading mode change
@@ -262,8 +341,8 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
    */
   async onUninit(): Promise<void> {
     this.log('ZonneplanBatteryDevice uninitialized');
-    // Cleanup is minimal as we don't have active timers or intervals
-    // All resources will be cleaned up by Homey
+    // Stop profile poller
+    this.stopProfilePoller();
   }
 
   /**

@@ -276,7 +276,9 @@
         "zonneplan_daily_discharged",
         "zonneplan_cycle_count",
         "zonneplan_load_balancing",
-        "zonneplan_last_update"
+        "zonneplan_last_update",
+        "zonneplan_overall_rank",
+        "zonneplan_provider_rank"
       ],
       "platforms": [
         "local"
@@ -415,6 +417,22 @@
               "hint": {
                 "en": "Automatically send battery data to Onbalansmarkt.com when received via flow card (requires API key)",
                 "nl": "Automatisch batterijgegevens versturen naar Onbalansmarkt.com bij ontvangst via flow card (vereist API-sleutel)"
+              }
+            },
+            {
+              "id": "onbalansmarkt_poll_interval",
+              "type": "number",
+              "label": {
+                "en": "Poll Interval (seconds)",
+                "nl": "Poll Interval (seconden)"
+              },
+              "value": 300,
+              "min": 60,
+              "max": 3600,
+              "decimals": 0,
+              "hint": {
+                "en": "How often to fetch ranking data from Onbalansmarkt (requires API key). Minimum 60 seconds, maximum 1 hour",
+                "nl": "Hoe vaak ranglijstgegevens van Onbalansmarkt worden opgehaald (vereist API-sleutel). Minimum 60 seconden, maximum 1 uur"
               }
             }
           ]
@@ -585,6 +603,40 @@
       "setable": false,
       "uiComponent": "sensor",
       "icon": "/assets/capabilities/frank_energie_battery_charge.svg"
+    },
+    "zonneplan_overall_rank": {
+      "id": "zonneplan_overall_rank",
+      "type": "number",
+      "title": {
+        "en": "Overall Rank",
+        "nl": "Algehele Positie"
+      },
+      "desc": {
+        "en": "User's overall ranking position on Onbalansmarkt",
+        "nl": "Positie van de gebruiker in de algehele ranglijst op Onbalansmarkt"
+      },
+      "icon": "/assets/capabilities/frank_energie_overall_rank.svg",
+      "min": 1,
+      "decimals": 0,
+      "getable": true,
+      "setable": false
+    },
+    "zonneplan_provider_rank": {
+      "id": "zonneplan_provider_rank",
+      "type": "number",
+      "title": {
+        "en": "Provider Rank",
+        "nl": "Leverancier Positie"
+      },
+      "desc": {
+        "en": "User's ranking position among Zonneplan users on Onbalansmarkt",
+        "nl": "Positie van de gebruiker onder Zonneplan gebruikers op Onbalansmarkt"
+      },
+      "icon": "/assets/capabilities/frank_energie_provider_rank.svg",
+      "min": 1,
+      "decimals": 0,
+      "getable": true,
+      "setable": false
     },
     "zonneplan_total_earned": {
       "id": "zonneplan_total_earned",

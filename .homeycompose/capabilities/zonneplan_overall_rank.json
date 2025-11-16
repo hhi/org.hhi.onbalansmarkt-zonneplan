@@ -1,0 +1,17 @@
+{
+  "id": "zonneplan_overall_rank",
+  "type": "number",
+  "title": {
+    "en": "Overall Rank",
+    "nl": "Algehele Positie"
+  },
+  "desc": {
+    "en": "User's overall ranking position on Onbalansmarkt",
+    "nl": "Positie van de gebruiker in de algehele ranglijst op Onbalansmarkt"
+  },
+  "icon": "/assets/capabilities/frank_energie_overall_rank.svg",
+  "min": 1,
+  "decimals": 0,
+  "getable": true,
+  "setable": false
+}

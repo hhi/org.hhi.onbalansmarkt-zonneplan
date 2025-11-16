@@ -1,0 +1,28 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="medalGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFA500;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#FFA500" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Double star badge for rank -->
+  <g transform="translate(100, 85) scale(1.15)">
+    <!-- Outer star (larger, golden) -->
+    <path d="M 0 -28 L 8 -8 L 30 -8 L 13 6 L 21 26 L 0 14 L -21 26 L -13 6 L -30 -8 L -8 -8 Z"
+          fill="#FFD700" opacity="0.3" stroke="#FFD700" stroke-width="1.5"/>
+
+    <!-- Inner star (smaller, brighter gold) -->
+    <path d="M 0 -20 L 6 -6 L 22 -6 L 10 4 L 15 18 L 0 10 L -15 18 L -10 4 L -22 -6 L -6 -6 Z"
+          fill="#FFA500" opacity="0.5" stroke="#FFA500" stroke-width="1.5"/>
+  </g>
+
+  <!-- Rank #3 below stars -->
+  <g transform="translate(100, 155)">
+    <circle cx="0" cy="0" r="20" fill="#FFD700" opacity="0.2" stroke="#FFA500" stroke-width="1.5"/>
+    <text x="0" y="7" font-size="22" font-weight="bold" fill="#FFA500" text-anchor="middle" font-family="Arial, sans-serif">#3</text>
+  </g>
+</svg>

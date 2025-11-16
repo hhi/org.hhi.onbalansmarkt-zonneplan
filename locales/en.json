@@ -36,5 +36,15 @@
       "title": "Validation Error",
       "fields": "Please fill in all required fields."
     }
+  },
+  "capabilities": {
+    "zonneplan_overall_rank": {
+      "title": "Overall Rank",
+      "desc": "Your overall ranking position on Onbalansmarkt"
+    },
+    "zonneplan_provider_rank": {
+      "title": "Provider Rank",
+      "desc": "Your ranking position among Zonneplan users on Onbalansmarkt"
+    }
   }
 }

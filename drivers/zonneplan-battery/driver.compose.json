@@ -12,7 +12,9 @@
     "zonneplan_daily_discharged",
     "zonneplan_cycle_count",
     "zonneplan_load_balancing",
-    "zonneplan_last_update"
+    "zonneplan_last_update",
+    "zonneplan_overall_rank",
+    "zonneplan_provider_rank"
   ],
   "platforms": [
     "local"
