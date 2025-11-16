@@ -69,7 +69,7 @@ export = class ZonneplanBatteryDriver extends Homey.Driver {
             auto_send_measurements: pairingData.autoSend,
             exclude_from_energy: true,
             measurements_send_enabled: false, // Default to disabled
-            measurements_send_interval: 60, // Default to 60 minutes
+            measurements_send_interval: 15, // Default to 15 minutes
             measurements_send_start_minute: 0, // Default to start of hour
           },
         },

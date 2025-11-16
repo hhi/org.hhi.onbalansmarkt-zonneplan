@@ -147,7 +147,7 @@
           "en": "Send Interval (minutes)",
           "nl": "Verzendinterval (minuten)"
         },
-        "value": 60,
+        "value": 15,
         "min": 5,
         "max": 1440,
         "decimals": 0,

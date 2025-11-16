@@ -116,7 +116,7 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
 
     // Calculate time to first send
     const timeToFirstSend = this.calculateNextMeasurementTime();
-    const intervalMinutes = (this.getSetting('measurements_send_interval') || 60) as number;
+    const intervalMinutes = (this.getSetting('measurements_send_interval') || 15) as number;
     const intervalMs = intervalMinutes * 60 * 1000;
 
     this.log(`Measurements scheduler will first run in ${timeToFirstSend}ms, then every ${intervalMinutes} minutes`);
@@ -155,7 +155,7 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
   private calculateNextMeasurementTime(): number {
     const now = new Date();
     const startMinute = (this.getSetting('measurements_send_start_minute') || 0) as number;
-    const intervalMinutes = (this.getSetting('measurements_send_interval') || 60) as number;
+    const intervalMinutes = (this.getSetting('measurements_send_interval') || 15) as number;
 
     // Get current minute of the hour
     const currentMinute = now.getMinutes();
