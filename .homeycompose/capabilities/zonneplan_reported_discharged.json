@@ -1,0 +1,24 @@
+{
+  "id": "zonneplan_reported_discharged",
+  "uiQuickAction": false,
+  "type": "number",
+  "title": {
+    "en": "Reported Discharged",
+    "nl": "Gerapporteerd Geleverd"
+  },
+  "units": {
+    "en": "kWh",
+    "nl": "kWh"
+  },
+  "decimals": 2,
+  "insights": true,
+  "chartType": "stepLine",
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "icon": "/assets/capabilities/zonneplan_reported_discharged.svg",
+  "description": {
+    "en": "Battery discharged today as reported by Onbalansmarkt API",
+    "nl": "Batterij geleverd vandaag zoals gerapporteerd door Onbalansmarkt API"
+  }
+}

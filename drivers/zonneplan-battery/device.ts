@@ -220,10 +220,19 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
     try {
       const profile = await this.onbalansmarktClient.getProfile();
 
-      // Update ranking capabilities with today's data
+      // Update capabilities with today's data from API
       if (profile.resultToday) {
+        // Rankings
         await this.setCapabilityValue('zonneplan_overall_rank', profile.resultToday.overallRank || 0);
         await this.setCapabilityValue('zonneplan_provider_rank', profile.resultToday.providerRank || 0);
+
+        // Reported battery metrics from API (separate from flow card data)
+        if (profile.resultToday.batteryCharged !== null && profile.resultToday.batteryCharged !== undefined) {
+          await this.setCapabilityValue('zonneplan_reported_charged', profile.resultToday.batteryCharged);
+        }
+        if (profile.resultToday.batteryDischarged !== null && profile.resultToday.batteryDischarged !== undefined) {
+          await this.setCapabilityValue('zonneplan_reported_discharged', profile.resultToday.batteryDischarged);
+        }
       } else {
         // No data yet for today
         await this.setCapabilityValue('zonneplan_overall_rank', 0);
@@ -248,6 +257,8 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
       { name: 'zonneplan_total_earned', value: 0 },
       { name: 'zonneplan_daily_charged', value: 0 },
       { name: 'zonneplan_daily_discharged', value: 0 },
+      { name: 'zonneplan_reported_charged', value: 0 }, // From API
+      { name: 'zonneplan_reported_discharged', value: 0 }, // From API
       { name: 'zonneplan_cycle_count', value: 0 },
       { name: 'zonneplan_load_balancing', value: false },
       { name: 'zonneplan_last_update', value: 'Never' }, // Persistent - only set if capability is new

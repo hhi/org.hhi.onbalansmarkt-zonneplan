@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "org.hhi.onbalansmarkt-zonneplan",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "compatibility": ">=12.4.0",
   "sdk": 3,
   "platforms": [
@@ -679,6 +679,54 @@
       "decimals": 0,
       "getable": true,
       "setable": false
+    },
+    "zonneplan_reported_charged": {
+      "id": "zonneplan_reported_charged",
+      "uiQuickAction": false,
+      "type": "number",
+      "title": {
+        "en": "Reported Charged",
+        "nl": "Gerapporteerd Geladen"
+      },
+      "units": {
+        "en": "kWh",
+        "nl": "kWh"
+      },
+      "decimals": 2,
+      "insights": true,
+      "chartType": "stepLine",
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "icon": "/assets/capabilities/zonneplan_reported_charged.svg",
+      "description": {
+        "en": "Battery charged today as reported by Onbalansmarkt API",
+        "nl": "Batterij geladen vandaag zoals gerapporteerd door Onbalansmarkt API"
+      }
+    },
+    "zonneplan_reported_discharged": {
+      "id": "zonneplan_reported_discharged",
+      "uiQuickAction": false,
+      "type": "number",
+      "title": {
+        "en": "Reported Discharged",
+        "nl": "Gerapporteerd Geleverd"
+      },
+      "units": {
+        "en": "kWh",
+        "nl": "kWh"
+      },
+      "decimals": 2,
+      "insights": true,
+      "chartType": "stepLine",
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "icon": "/assets/capabilities/zonneplan_reported_discharged.svg",
+      "description": {
+        "en": "Battery discharged today as reported by Onbalansmarkt API",
+        "nl": "Batterij geleverd vandaag zoals gerapporteerd door Onbalansmarkt API"
+      }
     },
     "zonneplan_total_earned": {
       "id": "zonneplan_total_earned",
