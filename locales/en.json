@@ -16,8 +16,8 @@
       "api_key": {
         "title": "Onbalansmarkt Integration",
         "subtitle": "Optional: enter your Onbalansmarkt API key to automatically send data",
-        "api_key": "API Key (Optional)",
-        "api_key.hint": "Get an API key at https://onbalansmarkt.com (optional for flow-card only use)",
+        "api_key": "API Key",
+        "api_key.hint": "Get an API key at https://onbalansmarkt.com (optional)",
         "auto_send": "Auto-send measurements",
         "auto_send.hint": "Automatically send battery data to Onbalansmarkt when received via flow card",
         "error": {

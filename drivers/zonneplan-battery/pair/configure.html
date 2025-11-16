@@ -38,9 +38,9 @@
         <legend style="font-weight: bold; margin-bottom: 16px;" data-i18n="pair.zonneplan.api_key.title">Onbalansmarkt Integratie</legend>
 
         <div class="homey-form-group">
-          <label class="homey-form-label" for="apiKey" data-i18n="pair.zonneplan.api_key.api_key">API Key (Optioneel)</label>
-          <input id="apiKey" type="text" class="homey-form-input" placeholder="your-api-key-here" />
-          <small class="homey-form-hint" data-i18n="pair.zonneplan.api_key.api_key.hint">Verkrijg een API key op https://onbalansmarkt.com (optioneel voor flow-card only use)</small>
+          <label class="homey-form-label" for="apiKey" data-i18n="pair.zonneplan.api_key.api_key">API Key</label>
+          <input id="apiKey" type="text" required class="homey-form-input" placeholder="your-api-key-here" />
+          <small class="homey-form-hint" data-i18n="pair.zonneplan.api_key.api_key.hint">Verkrijg een API key op https://onbalansmarkt.com</small>
         </div>
 
       </fieldset>
@@ -81,6 +81,14 @@
         Homey.showDialog('error', {
           title: Homey.__('error.validation.title'),
           body: 'Trading mode is required.',
+        });
+        return;
+      }
+
+      if (!apiKey) {
+        Homey.showDialog('error', {
+          title: Homey.__('error.validation.title'),
+          body: 'Onbalansmarkt API key is required.',
         });
         return;
       }

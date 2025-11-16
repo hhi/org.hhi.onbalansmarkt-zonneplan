@@ -16,8 +16,8 @@
       "api_key": {
         "title": "Onbalansmarkt Integratie",
         "subtitle": "Optioneel: voer je Onbalansmarkt API key in om automatisch data te versturen",
-        "api_key": "API Key (Optioneel)",
-        "api_key.hint": "Verkrijg een API key op https://onbalansmarkt.com (optioneel voor alleen flow-card gebruik)",
+        "api_key": "API Key",
+        "api_key.hint": "Verkrijg een API key op https://onbalansmarkt.com (optioneel)",
         "auto_send": "Automatisch metingen versturen",
         "auto_send.hint": "Stuur batterijdata automatisch naar Onbalansmarkt wanneer deze via flow card ontvangen wordt",
         "error": {
