@@ -1,0 +1,10 @@
+{
+  "0.2.0": {
+    "en": "Fixed linting errors, added skip zero results setting, improved asset structure. Removed unused Frank Energie assets, added onUninit() cleanup handler, updated documentation.",
+    "nl": "Linting fouten opgelost, instelling voor nulresultaten toegevoegd, verbeterde assetstructuur. Ongebruikte Frank Energie-assets verwijderd, onUninit() cleanup handler toegevoegd, documentatie bijgewerkt."
+  },
+  "0.1.0": {
+    "en": "Initial release with Zonneplan battery flow-card integration and Onbalansmarkt support",
+    "nl": "Eerste release met Zonneplan batterij flow-card integratie en Onbalansmarkt ondersteuning"
+  }
+}

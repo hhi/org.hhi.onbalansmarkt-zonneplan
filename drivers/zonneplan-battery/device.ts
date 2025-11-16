@@ -2,13 +2,13 @@ import Homey from 'homey';
 import { OnbalansmarktClient } from '../../lib';
 
 interface ZonneplanMetrics {
-  daily_earned: number;
-  total_earned: number;
-  daily_charged: number;
-  daily_discharged: number;
-  battery_percentage: number;
-  cycle_count: number;
-  load_balancing_active: boolean;
+  dailyEarned: number;
+  totalEarned: number;
+  dailyCharged: number;
+  dailyDischarged: number;
+  batteryPercentage: number;
+  cycleCount: number;
+  loadBalancingActive: boolean;
   timestamp: Date;
 }
 
@@ -99,13 +99,13 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
       this.log('Received Zonneplan metrics via flow card');
 
       const metrics: ZonneplanMetrics = {
-        daily_earned: args.daily_earned || 0,
-        total_earned: args.total_earned || 0,
-        daily_charged: args.daily_charged || 0,
-        daily_discharged: args.daily_discharged || 0,
-        battery_percentage: args.battery_percentage || 0,
-        cycle_count: args.cycle_count || 0,
-        load_balancing_active: args.load_balancing_active || false,
+        dailyEarned: args.daily_earned || 0,
+        totalEarned: args.total_earned || 0,
+        dailyCharged: args.daily_charged || 0,
+        dailyDischarged: args.daily_discharged || 0,
+        batteryPercentage: args.battery_percentage || 0,
+        cycleCount: args.cycle_count || 0,
+        loadBalancingActive: args.load_balancing_active || false,
         timestamp: args.timestamp ? new Date(args.timestamp) : new Date(),
       };
 
@@ -125,7 +125,13 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
 
     // Send to Onbalansmarkt if enabled
     if (this.getSetting('auto_send_measurements')) {
-      await this.sendToOnbalansmarkt(metrics);
+      // Check if we should skip sending zero results
+      const reportZeroResults = this.getSetting('report_zero_trading_results') || false;
+      if (metrics.dailyEarned === 0 && !reportZeroResults) {
+        this.log('Skipping zero trading result - report_zero_trading_results is disabled');
+      } else {
+        await this.sendToOnbalansmarkt(metrics);
+      }
     }
 
     // Emit trigger card
@@ -140,16 +146,16 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
   private async updateCapabilities(metrics: ZonneplanMetrics) {
     // Apply total earned offset from settings
     const offset = this.getSetting('total_earned_offset') || 0;
-    const adjustedTotal = metrics.total_earned + offset;
+    const adjustedTotal = metrics.totalEarned + offset;
 
     const updates = [
-      { name: 'measure_battery', value: metrics.battery_percentage },
-      { name: 'zonneplan_daily_earned', value: metrics.daily_earned },
+      { name: 'measure_battery', value: metrics.batteryPercentage },
+      { name: 'zonneplan_daily_earned', value: metrics.dailyEarned },
       { name: 'zonneplan_total_earned', value: adjustedTotal },
-      { name: 'zonneplan_daily_charged', value: metrics.daily_charged },
-      { name: 'zonneplan_daily_discharged', value: metrics.daily_discharged },
-      { name: 'zonneplan_cycle_count', value: metrics.cycle_count },
-      { name: 'zonneplan_load_balancing', value: metrics.load_balancing_active },
+      { name: 'zonneplan_daily_charged', value: metrics.dailyCharged },
+      { name: 'zonneplan_daily_discharged', value: metrics.dailyDischarged },
+      { name: 'zonneplan_cycle_count', value: metrics.cycleCount },
+      { name: 'zonneplan_load_balancing', value: metrics.loadBalancingActive },
       {
         name: 'zonneplan_last_update',
         value: metrics.timestamp.toLocaleString('nl-NL', {
@@ -185,13 +191,13 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
 
       await this.onbalansmarktClient.sendMeasurement({
         timestamp: metrics.timestamp,
-        batteryResult: metrics.daily_earned,
-        batteryResultTotal: metrics.total_earned + offset,
-        batteryCharge: metrics.battery_percentage,
-        chargedToday: metrics.daily_charged > 0 ? Math.round(metrics.daily_charged) : undefined,
-        dischargedToday: metrics.daily_discharged > 0 ? Math.round(metrics.daily_discharged) : undefined,
-        totalBatteryCycles: metrics.cycle_count > 0 ? metrics.cycle_count : undefined,
-        loadBalancingActive: metrics.load_balancing_active ? 'on' : 'off',
+        batteryResult: metrics.dailyEarned,
+        batteryResultTotal: metrics.totalEarned + offset,
+        batteryCharge: metrics.batteryPercentage,
+        chargedToday: metrics.dailyCharged > 0 ? Math.round(metrics.dailyCharged) : undefined,
+        dischargedToday: metrics.dailyDischarged > 0 ? Math.round(metrics.dailyDischarged) : undefined,
+        totalBatteryCycles: metrics.cycleCount > 0 ? metrics.cycleCount : undefined,
+        loadBalancingActive: metrics.loadBalancingActive ? 'on' : 'off',
         mode: tradingMode as 'imbalance' | 'imbalance_aggressive' | 'self_consumption_plus' | 'manual',
       });
 
@@ -211,13 +217,13 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
       const triggerCard = this.homey.flow.getDeviceTriggerCard('zonneplan_metrics_updated');
 
       await triggerCard.trigger(this, {
-        daily_earned: metrics.daily_earned,
-        total_earned: metrics.total_earned + offset,
-        daily_charged: metrics.daily_charged,
-        daily_discharged: metrics.daily_discharged,
-        battery_percentage: metrics.battery_percentage,
-        cycle_count: metrics.cycle_count,
-        load_balancing_active: metrics.load_balancing_active,
+        daily_earned: metrics.dailyEarned,
+        total_earned: metrics.totalEarned + offset,
+        daily_charged: metrics.dailyCharged,
+        daily_discharged: metrics.dailyDischarged,
+        battery_percentage: metrics.batteryPercentage,
+        cycle_count: metrics.cycleCount,
+        load_balancing_active: metrics.loadBalancingActive,
       });
 
       this.log('Metrics updated trigger emitted');
@@ -249,5 +255,22 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
     if (changedKeys.includes('total_earned_offset')) {
       this.log('Total earned offset changed to:', newSettings.total_earned_offset);
     }
+  }
+
+  /**
+   * Cleanup when device is uninitialized
+   */
+  async onUninit(): Promise<void> {
+    this.log('ZonneplanBatteryDevice uninitialized');
+    // Cleanup is minimal as we don't have active timers or intervals
+    // All resources will be cleaned up by Homey
+  }
+
+  /**
+   * Cleanup when device is deleted
+   */
+  async onDeleted(): Promise<void> {
+    this.log('ZonneplanBatteryDevice deleted from Homey');
+    // Device has been removed, no further cleanup needed
   }
 };

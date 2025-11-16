@@ -17,7 +17,7 @@ export = class ZonneplanBatteryDriver extends Homey.Driver {
    */
   async onPair(session: Homey.Driver.PairSession) {
     // Session store for configuration
-    let pairingData: {
+    const pairingData: {
       deviceName: string;
       tradingMode: string;
       apiKey: string;

@@ -422,6 +422,28 @@
         {
           "type": "group",
           "label": {
+            "en": "Advanced",
+            "nl": "Geavanceerd"
+          },
+          "children": [
+            {
+              "id": "report_zero_trading_results",
+              "type": "checkbox",
+              "label": {
+                "en": "Report zero trading results",
+                "nl": "Rapporteer nul handelsresultaten"
+              },
+              "value": false,
+              "hint": {
+                "en": "When disabled (default), measurements with €0 trading result will not be sent to Onbalansmarkt.com",
+                "nl": "Wanneer uitgeschakeld (standaard), zullen metingen met €0 handelsresultaat niet naar Onbalansmarkt.com worden verzonden"
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
             "en": "Energy Dashboard",
             "nl": "Energie Dashboard"
           },
