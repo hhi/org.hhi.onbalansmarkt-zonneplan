@@ -1,4 +1,8 @@
 {
+  "0.4.0": {
+    "en": "Added countdown timer for scheduled measurements. Simplified measurements sending to scheduled-only approach. Added separate sensors for API-provided battery metrics. Improved data persistence across app updates.",
+    "nl": "Afteltimer voor geplande metingen toegevoegd. Vereenvoudigde metingverzending naar alleen geplande aanpak. Afzonderlijke sensoren voor door API verstrekte batterijeigenschappen toegevoegd. Verbeterde gegevenspersistentie over app-updates."
+  },
   "0.3.0": {
     "en": "Added Onbalansmarkt profile polling for user rankings (overall rank and provider rank). Configurable poll interval for automatic ranking updates.",
     "nl": "Polling van Onbalansmarkt profielgegevens voor gebruikersranglijsten (algehele positie en leverancier positie) toegevoegd. Configureerbare poll interval voor automatische ranglijstupdates."

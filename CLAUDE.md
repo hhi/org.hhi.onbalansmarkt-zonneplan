@@ -34,7 +34,8 @@ The app follows Homey's standard architecture with three main layers:
 - **Passive flow-card driven** (receives data via Homey flows)
 - Virtual device with manual pairing
 - Single driver (zonneplan-battery)
-- No API polling, no Frank Energie authentication
+- No Frank Energie authentication
+- Optional API integration for rankings via Onbalansmarkt profile polling
 
 ### Library Services
 
@@ -102,7 +103,9 @@ Runs ESLint on `.js` and `.ts` files.
 
 ## Key Concepts
 
-- **Capabilities**: 7 custom capabilities for battery metrics
+- **Capabilities**: Custom capabilities for battery metrics and Onbalansmarkt integration
+
+  **Flow Card Metrics:**
   - `zonneplan_daily_earned` - Daily earnings (€)
   - `zonneplan_total_earned` - Lifetime total (€)
   - `zonneplan_daily_charged` - Daily charged (kWh)
@@ -111,9 +114,24 @@ Runs ESLint on `.js` and `.ts` files.
   - `zonneplan_load_balancing` - Load balancing status
   - `zonneplan_last_update` - Last update timestamp
 
+  **API-Reported Metrics:**
+  - `zonneplan_reported_charged` - Daily charged from API (kWh)
+  - `zonneplan_reported_discharged` - Daily discharged from API (kWh)
+
+  **Ranking & Scheduling:**
+  - `zonneplan_overall_rank` - User's overall rank
+  - `zonneplan_provider_rank` - User's provider rank
+  - `onbalansmarkt_next_livesend` - Countdown timer to next scheduled send (minutes)
+
 - **Flow Cards**:
   - **Action**: `receive_zonneplan_metrics` - Receive metrics from Zonneplan
   - **Trigger**: `zonneplan_metrics_updated` - Fires when metrics received
+
+- **Scheduled Measurements**:
+  - Automatic sending of measurements at configured intervals
+  - Configurable start minute and interval (e.g., every 15 minutes starting at minute 0)
+  - Optional zero-result filtering to avoid reporting zero earnings
+  - Countdown timer displays minutes until next scheduled send
 
 - **Configuration**:
   - `.homeycompose/app.json` - App metadata
@@ -156,10 +174,19 @@ this.logger?.('Message here', { detail: 'value' });
 ```
 .homeycompose/
 ├── app.json                           # App metadata
-├── capabilities/                      # Custom capability definitions
+├── capabilities/                      # Custom capability definitions (12 total)
 │   ├── zonneplan_daily_earned.json
 │   ├── zonneplan_total_earned.json
-│   └── ... (5 more)
+│   ├── zonneplan_daily_charged.json
+│   ├── zonneplan_daily_discharged.json
+│   ├── zonneplan_cycle_count.json
+│   ├── zonneplan_load_balancing.json
+│   ├── zonneplan_last_update.json
+│   ├── zonneplan_overall_rank.json
+│   ├── zonneplan_provider_rank.json
+│   ├── zonneplan_reported_charged.json
+│   ├── zonneplan_reported_discharged.json
+│   └── onbalansmarkt_next_livesend.json
 └── flow/
     ├── actions/
     │   └── receive_zonneplan_metrics.json
