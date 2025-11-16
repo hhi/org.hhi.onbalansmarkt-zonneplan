@@ -126,6 +126,51 @@
           "en": "How often to fetch ranking data from Onbalansmarkt (requires API key). Minimum 60 seconds, maximum 1 hour",
           "nl": "Hoe vaak ranglijstgegevens van Onbalansmarkt worden opgehaald (vereist API-sleutel). Minimum 60 seconden, maximum 1 uur"
         }
+      },
+      {
+        "id": "measurements_send_enabled",
+        "type": "checkbox",
+        "label": {
+          "en": "Enable scheduled measurements",
+          "nl": "Geplande metingen inschakelen"
+        },
+        "value": false,
+        "hint": {
+          "en": "Automatically send the latest battery metrics to Onbalansmarkt.com on a schedule (requires API key)",
+          "nl": "Automatisch de laatste batterijgegevens naar Onbalansmarkt.com verzenden volgens een schema (vereist API-sleutel)"
+        }
+      },
+      {
+        "id": "measurements_send_interval",
+        "type": "number",
+        "label": {
+          "en": "Send Interval (minutes)",
+          "nl": "Verzendinterval (minuten)"
+        },
+        "value": 60,
+        "min": 5,
+        "max": 1440,
+        "decimals": 0,
+        "hint": {
+          "en": "How often to send metrics to Onbalansmarkt. Minimum 5 minutes, maximum 24 hours (1440 minutes)",
+          "nl": "Hoe vaak metingen naar Onbalansmarkt worden verzonden. Minimum 5 minuten, maximum 24 uur (1440 minuten)"
+        }
+      },
+      {
+        "id": "measurements_send_start_minute",
+        "type": "number",
+        "label": {
+          "en": "Start Minute (0-59)",
+          "nl": "Startminuut (0-59)"
+        },
+        "value": 0,
+        "min": 0,
+        "max": 59,
+        "decimals": 0,
+        "hint": {
+          "en": "At which minute of the hour to start sending (0-59). E.g., 15 = :15 past each hour",
+          "nl": "Op welke minuut van het uur moet worden gestart (0-59). Bijv. 15 = :15 van elk uur"
+        }
       }
     ]
   },

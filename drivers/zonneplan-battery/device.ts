@@ -21,6 +21,8 @@ interface ZonneplanMetrics {
 export = class ZonneplanBatteryDevice extends Homey.Device {
   private onbalansmarktClient: OnbalansmarktClient | null = null;
   private profilePollerHandle: NodeJS.Timeout | null = null;
+  private measurementsSchedulerHandle: NodeJS.Timeout | null = null;
+  private lastReceivedMetrics: ZonneplanMetrics | null = null;
 
   async onInit() {
     this.log('ZonneplanBatteryDevice initialized');
@@ -36,6 +38,9 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
 
     // Start profile poller if API key is configured
     this.startProfilePoller();
+
+    // Start measurements scheduler if enabled
+    this.startMeasurementsScheduler();
 
     this.log('Zonneplan Battery device ready');
   }
@@ -93,6 +98,115 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
       this.profilePollerHandle = null;
       this.log('Profile poller stopped');
     }
+  }
+
+  /**
+   * Start scheduled measurement sender
+   */
+  private startMeasurementsScheduler() {
+    // Stop existing scheduler if any
+    this.stopMeasurementsScheduler();
+
+    // Only start if enabled and API key is configured
+    const enabled = this.getSetting('measurements_send_enabled');
+    if (!enabled || !this.onbalansmarktClient) {
+      this.log('Measurements scheduler disabled or no API key configured');
+      return;
+    }
+
+    // Calculate time to first send
+    const timeToFirstSend = this.calculateNextMeasurementTime();
+    const intervalMinutes = (this.getSetting('measurements_send_interval') || 60) as number;
+    const intervalMs = intervalMinutes * 60 * 1000;
+
+    this.log(`Measurements scheduler will first run in ${timeToFirstSend}ms, then every ${intervalMinutes} minutes`);
+
+    // Schedule first run
+    const firstRunHandle = this.homey.setTimeout(async () => {
+      await this.sendScheduledMeasurement();
+
+      // Then set up periodic interval
+      this.measurementsSchedulerHandle = this.homey.setInterval(async () => {
+        await this.sendScheduledMeasurement();
+      }, intervalMs);
+
+      this.log(`Measurements scheduler started with ${intervalMinutes}m interval`);
+    }, timeToFirstSend);
+
+    // Store the timeout handle so we can clear it if needed
+    this.measurementsSchedulerHandle = firstRunHandle;
+  }
+
+  /**
+   * Stop measurement scheduler
+   */
+  private stopMeasurementsScheduler() {
+    if (this.measurementsSchedulerHandle) {
+      this.homey.clearInterval(this.measurementsSchedulerHandle);
+      this.homey.clearTimeout(this.measurementsSchedulerHandle);
+      this.measurementsSchedulerHandle = null;
+      this.log('Measurements scheduler stopped');
+    }
+  }
+
+  /**
+   * Calculate milliseconds until next measurement should be sent
+   */
+  private calculateNextMeasurementTime(): number {
+    const now = new Date();
+    const startMinute = (this.getSetting('measurements_send_start_minute') || 0) as number;
+    const intervalMinutes = (this.getSetting('measurements_send_interval') || 60) as number;
+
+    // Get current minute of the hour
+    const currentMinute = now.getMinutes();
+
+    // Calculate next send time based on start minute and interval
+    let nextMinute = startMinute;
+
+    // If we haven't reached start minute this hour yet
+    if (currentMinute < startMinute) {
+      nextMinute = startMinute;
+    } else {
+      // Find next occurrence by adding intervals
+      nextMinute = startMinute;
+      while (nextMinute <= currentMinute) {
+        nextMinute += intervalMinutes;
+      }
+    }
+
+    // Create date for next send
+    const nextSendTime = new Date(now);
+    nextSendTime.setMinutes(nextMinute, 0, 0); // Set to start of next send minute
+
+    // If next send time is in the past, add one interval
+    if (nextSendTime <= now) {
+      nextSendTime.setMinutes(nextSendTime.getMinutes() + intervalMinutes);
+    }
+
+    const timeToWait = nextSendTime.getTime() - now.getTime();
+    this.log(`Next measurement send at ${nextSendTime.toISOString()} (in ${Math.round(timeToWait / 1000)}s)`);
+
+    return timeToWait;
+  }
+
+  /**
+   * Send scheduled measurement if available
+   */
+  private async sendScheduledMeasurement() {
+    if (!this.lastReceivedMetrics) {
+      this.log('No metrics available for scheduled send');
+      return;
+    }
+
+    // Check if we should skip sending zero results
+    const reportZeroResults = this.getSetting('report_zero_trading_results') || false;
+    if (this.lastReceivedMetrics.dailyEarned === 0 && !reportZeroResults) {
+      this.log('Skipping scheduled send: zero trading result and report_zero_trading_results is disabled');
+      return;
+    }
+
+    this.log('Sending scheduled measurement');
+    await this.sendToOnbalansmarkt(this.lastReceivedMetrics);
   }
 
   /**
@@ -191,6 +305,9 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
    */
   private async handleReceivedMetrics(metrics: ZonneplanMetrics) {
     this.log('Processing Zonneplan metrics:', JSON.stringify(metrics));
+
+    // Store the latest metrics for scheduled sending
+    this.lastReceivedMetrics = metrics;
 
     // Update all capabilities
     await this.updateCapabilities(metrics);
@@ -317,12 +434,23 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
     if (changedKeys.includes('onbalansmarkt_api_key')) {
       this.initializeOnbalansmarktClient();
       this.startProfilePoller();
+      this.startMeasurementsScheduler();
     }
 
     // Restart profile poller if poll interval changed
     if (changedKeys.includes('onbalansmarkt_poll_interval')) {
       this.log('Poll interval changed to:', newSettings.onbalansmarkt_poll_interval);
       this.startProfilePoller();
+    }
+
+    // Restart measurements scheduler if related settings changed
+    if (
+      changedKeys.includes('measurements_send_enabled')
+      || changedKeys.includes('measurements_send_interval')
+      || changedKeys.includes('measurements_send_start_minute')
+    ) {
+      this.log('Measurements scheduler settings changed');
+      this.startMeasurementsScheduler();
     }
 
     // Log trading mode change
@@ -341,8 +469,9 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
    */
   async onUninit(): Promise<void> {
     this.log('ZonneplanBatteryDevice uninitialized');
-    // Stop profile poller
+    // Stop profile poller and measurements scheduler
     this.stopProfilePoller();
+    this.stopMeasurementsScheduler();
   }
 
   /**
