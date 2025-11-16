@@ -239,6 +239,7 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
 
   /**
    * Initialize capabilities with default values
+   * Preserves existing values (persistent across updates)
    */
   private async initializeCapabilities() {
     const capabilities = [
@@ -249,7 +250,7 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
       { name: 'zonneplan_daily_discharged', value: 0 },
       { name: 'zonneplan_cycle_count', value: 0 },
       { name: 'zonneplan_load_balancing', value: false },
-      { name: 'zonneplan_last_update', value: 'Never' },
+      { name: 'zonneplan_last_update', value: 'Never' }, // Persistent - only set if capability is new
       { name: 'zonneplan_overall_rank', value: 0 },
       { name: 'zonneplan_provider_rank', value: 0 },
     ];
@@ -258,20 +259,25 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
       if (!this.hasCapability(cap.name)) {
         try {
           await this.addCapability(cap.name);
-          this.log(`Added capability: ${cap.name}`);
+          // Only set default value for NEW capabilities
+          await this.setCapabilityValue(cap.name, cap.value);
+          this.log(`Added capability: ${cap.name} with default value`);
         } catch (error) {
           this.error(`Failed to add capability ${cap.name}:`, error);
         }
-      }
-
-      // Set default value if not yet set
-      try {
-        const currentValue = this.getCapabilityValue(cap.name);
-        if (currentValue === null || currentValue === undefined) {
-          await this.setCapabilityValue(cap.name, cap.value);
+      } else {
+        // Capability already exists - preserve its current value
+        try {
+          const currentValue = this.getCapabilityValue(cap.name);
+          // Log if we're restoring a value after update
+          if (currentValue !== null && currentValue !== undefined) {
+            if (cap.name === 'zonneplan_last_update') {
+              this.log(`Restored last_update value after update: ${currentValue}`);
+            }
+          }
+        } catch (error) {
+          this.error(`Failed to read capability ${cap.name}:`, error);
         }
-      } catch (error) {
-        // Ignore errors for capabilities that might not exist yet
       }
     }
   }
