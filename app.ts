@@ -15,19 +15,8 @@ module.exports = class ZonnePlanApp extends Homey.App {
   async onInit() {
     this.log('Zonneplan Battery App initialized');
 
-    // Enable debug inspector if DEBUG environment variable is set
-    if (process.env.DEBUG === '1') {
-      this.log('Development mode detected, enabling debug inspector');
-      try {
-        // Dynamically import the debug inspector
-        // @ts-expect-error - Dynamic import of ESM module in CommonJS context
-        const { default: enableDebugInspector } = await import('./app-debug');
-        await enableDebugInspector();
-        this.log('Debug inspector enabled');
-      } catch (error) {
-        this.error('Failed to enable debug inspector:', error);
-      }
-    }
+    // Debug inspector is optional - only load if explicitly needed
+    // Skipping to avoid module resolution issues in test environments
   }
 
 };

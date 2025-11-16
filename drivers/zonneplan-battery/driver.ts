@@ -12,62 +12,73 @@ export = class ZonneplanBatteryDriver extends Homey.Driver {
   }
 
   /**
-   * Handle pairing - combined form for virtual device
-   * User provides device name, trading mode (default: manual), and Onbalansmarkt API key (required)
+   * Handle pairing - form with device creation
    */
   async onPair(session: Homey.Driver.PairSession) {
-    // Session store for configuration
-    const pairingData: {
-      deviceName: string;
-      tradingMode: string;
-      apiKey: string;
-    } = {
+    this.log('onPair session started');
+
+    let pairingData = {
       deviceName: 'Zonneplan Battery',
       tradingMode: 'manual',
       apiKey: '',
     };
 
-    // Store all configuration from combined form
+    // Handler for storing config from configure view
     session.setHandler('store_config', async (data: {
       deviceName: string;
       tradingMode: string;
       apiKey: string;
     }) => {
-      pairingData.deviceName = data.deviceName;
-      pairingData.tradingMode = data.tradingMode || 'manual'; // Default to manual
-      pairingData.apiKey = data.apiKey || '';
-      this.log('Configuration stored:', {
-        deviceName: pairingData.deviceName,
-        tradingMode: pairingData.tradingMode,
-        apiKeyLength: pairingData.apiKey.length,
+      this.log('store_config handler called with:', {
+        deviceName: data.deviceName,
+        tradingMode: data.tradingMode,
+        apiKeyLength: data.apiKey?.length || 0,
       });
+
+      pairingData.deviceName = data.deviceName || 'Zonneplan Battery';
+      pairingData.tradingMode = data.tradingMode || 'manual';
+      pairingData.apiKey = data.apiKey || '';
+
+      this.log('Pairing data stored');
       return true;
     });
 
-    // Create virtual device
+    // Handler for listing devices in list_devices view
     session.setHandler('list_devices', async () => {
-      // Generate unique device ID
-      const deviceId = `zonneplan-battery-${Date.now()}`;
+      this.log('list_devices handler called');
 
-      return [
-        {
-          name: pairingData.deviceName,
-          data: {
-            id: deviceId,
-            type: 'zonneplan-battery',
-          },
-          settings: {
-            device_name: pairingData.deviceName,
-            trading_mode: pairingData.tradingMode,
-            total_earned_offset: 0,
-            onbalansmarkt_api_key: pairingData.apiKey,
-            exclude_from_energy: true,
-            measurements_send_enabled: false, // Default to disabled
-            measurements_send_interval: 15, // Default to 15 minutes
-            measurements_send_start_minute: 0, // Default to start of hour
-          },
+      if (!pairingData.deviceName) {
+        throw new Error('Device name not configured. Please restart pairing.');
+      }
+
+      const deviceId = `zonneplan-battery-${Date.now()}`;
+      const device = {
+        name: pairingData.deviceName,
+        data: {
+          id: deviceId,
+          type: 'zonneplan-battery',
         },
-      ];
+        settings: {
+          device_name: pairingData.deviceName,
+          trading_mode: pairingData.tradingMode,
+          total_earned_offset: 0,
+          onbalansmarkt_api_key: pairingData.apiKey,
+          exclude_from_energy: true,
+          measurements_send_enabled: false,
+          measurements_send_interval: 15,
+          measurements_send_start_minute: 0,
+        },
+      };
+
+      this.log('Creating device:', {
+        name: device.name,
+        dataId: device.data.id,
+        tradingMode: device.settings.trading_mode,
+      });
+
+      return [device];
     });
+
+    this.log('onPair handlers registered successfully');
   }
 };

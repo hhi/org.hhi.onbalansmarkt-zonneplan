@@ -1,59 +1,43 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zonneplan Batterij - Onbalansmarkt</title>
+  <title>Zonneplan Battery</title>
 </head>
 <body>
   <homey-pair>
-    <h1 data-i18n="pair.zonneplan.configure.title">Zonneplan Batterij</h1>
-    <p data-i18n="pair.zonneplan.configure.subtitle">Configureer je Zonneplan batterij voor Onbalansmarkt integratie</p>
+    <h1>Zonneplan Battery</h1>
+    <p>Configure your Zonneplan battery for Onbalansmarkt</p>
 
     <form class="homey-form">
-      <!-- Device Configuration Section -->
-      <fieldset>
-        <legend style="font-weight: bold; margin-bottom: 16px;">Apparaat Configuratie</legend>
-
-        <div class="homey-form-group">
-          <label class="homey-form-label" for="deviceName" data-i18n="pair.zonneplan.configure.device_name">Apparaatnaam</label>
-          <input id="deviceName" type="text" required class="homey-form-input" placeholder="Zonneplan Battery" value="Zonneplan Battery" />
-          <small class="homey-form-hint" data-i18n="pair.zonneplan.configure.device_name.hint">Kies een herkenbare naam voor je batterij</small>
-        </div>
-
-        <div class="homey-form-group">
-          <label class="homey-form-label" for="tradingMode" data-i18n="pair.zonneplan.configure.trading_mode">Handelsmodus</label>
-          <select id="tradingMode" required class="homey-form-input">
-            <option value="manual" data-i18n="pair.zonneplan.configure.trading_mode.manual">Handmatig</option>
-            <option value="imbalance" data-i18n="pair.zonneplan.configure.trading_mode.imbalance">Onbalans</option>
-            <option value="imbalance_aggressive" data-i18n="pair.zonneplan.configure.trading_mode.imbalance_aggressive">Onbalans Agressief</option>
-            <option value="self_consumption_plus" data-i18n="pair.zonneplan.configure.trading_mode.self_consumption_plus">Eigen Verbruik Plus</option>
-          </select>
-          <small class="homey-form-hint" data-i18n="pair.zonneplan.configure.trading_mode.hint">Selecteer de handelsmodus voor Onbalansmarkt integratie</small>
-        </div>
-      </fieldset>
-
-      <!-- Onbalansmarkt Integration Section -->
-      <fieldset style="margin-top: 24px;">
-        <legend style="font-weight: bold; margin-bottom: 16px;" data-i18n="pair.zonneplan.api_key.title">Onbalansmarkt Integratie</legend>
-
-        <div class="homey-form-group">
-          <label class="homey-form-label" for="apiKey" data-i18n="pair.zonneplan.api_key.api_key">API Key</label>
-          <input id="apiKey" type="text" required class="homey-form-input" placeholder="your-api-key-here" />
-          <small class="homey-form-hint" data-i18n="pair.zonneplan.api_key.api_key.hint">Verkrijg een API key op https://onbalansmarkt.com</small>
-        </div>
-
-      </fieldset>
-
-      <!-- Submit Button -->
-      <div class="homey-form-buttons" style="margin-top: 24px;">
-        <button type="submit" class="button positive" data-i18n="pair.buttons.finish">Voltooien</button>
+      <div class="homey-form-group">
+        <label class="homey-form-label" for="deviceName">Device Name</label>
+        <input id="deviceName" type="text" required class="homey-form-input" placeholder="Zonneplan Battery" value="Zonneplan Battery" />
       </div>
+
+      <div class="homey-form-group">
+        <label class="homey-form-label" for="tradingMode">Trading Mode</label>
+        <select id="tradingMode" required class="homey-form-input">
+          <option value="manual">Manual</option>
+          <option value="imbalance">Imbalance</option>
+          <option value="imbalance_aggressive">Imbalance Aggressive</option>
+          <option value="self_consumption_plus">Self Consumption Plus</option>
+        </select>
+      </div>
+
+      <div class="homey-form-group">
+        <label class="homey-form-label" for="apiKey">Onbalansmarkt API Key (Optional)</label>
+        <input id="apiKey" type="text" class="homey-form-input" placeholder="your-api-key" />
+        <small class="homey-form-hint">Optional: Get one at https://onbalansmarkt.com</small>
+      </div>
+
+      <button type="submit" class="button positive">Next</button>
     </form>
   </homey-pair>
 
   <script>
-    Homey.setTitle(Homey.__('pair.zonneplan.configure.title'));
+    Homey.setTitle('Zonneplan Battery');
 
     const form = document.querySelector('form');
     const deviceNameInput = document.getElementById('deviceName');
@@ -68,49 +52,34 @@
       const tradingMode = tradingModeSelect.value;
       const apiKey = apiKeyInput.value.trim();
 
-      // Validate required fields
-      if (!deviceName) {
+      if (!deviceName || !tradingMode) {
         Homey.showDialog('error', {
-          title: Homey.__('error.validation.title'),
-          body: 'Device name is required.',
-        });
-        return;
-      }
-
-      if (!tradingMode) {
-        Homey.showDialog('error', {
-          title: Homey.__('error.validation.title'),
-          body: 'Trading mode is required.',
-        });
-        return;
-      }
-
-      if (!apiKey) {
-        Homey.showDialog('error', {
-          title: Homey.__('error.validation.title'),
-          body: 'Onbalansmarkt API key is required.',
+          title: 'Validation Error',
+          body: 'Please fill in all required fields.',
         });
         return;
       }
 
       submitButton.disabled = true;
+      submitButton.textContent = 'Next...';
 
       try {
-        // Store all configuration data in one call
+        // Call the driver handler to store config
         await Homey.emit('store_config', {
           deviceName,
           tradingMode,
           apiKey,
         });
 
-        // Complete pairing (no more views needed)
+        // Navigate to next view (list_devices)
         Homey.nextView();
       } catch (error) {
         Homey.showDialog('error', {
           title: 'Configuration Error',
-          body: error.message || 'Failed to store configuration.',
+          body: error.message || 'Failed to save configuration.',
         });
         submitButton.disabled = false;
+        submitButton.textContent = 'Next';
       }
     });
 
