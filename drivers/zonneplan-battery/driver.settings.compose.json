@@ -99,19 +99,6 @@
         }
       },
       {
-        "id": "auto_send_measurements",
-        "type": "checkbox",
-        "label": {
-          "en": "Auto-send measurements",
-          "nl": "Automatisch metingen versturen"
-        },
-        "value": false,
-        "hint": {
-          "en": "Automatically send battery data to Onbalansmarkt.com when received via flow card (requires API key)",
-          "nl": "Automatisch batterijgegevens versturen naar Onbalansmarkt.com bij ontvangst via flow card (vereist API-sleutel)"
-        }
-      },
-      {
         "id": "onbalansmarkt_poll_interval",
         "type": "number",
         "label": {

@@ -43,13 +43,6 @@
           <small class="homey-form-hint" data-i18n="pair.zonneplan.api_key.api_key.hint">Verkrijg een API key op https://onbalansmarkt.com</small>
         </div>
 
-        <div class="homey-form-group">
-          <label class="homey-form-label">
-            <input id="autoSend" type="checkbox" />
-            <span data-i18n="pair.zonneplan.api_key.auto_send">Automatisch metingen versturen</span>
-          </label>
-          <small class="homey-form-hint" data-i18n="pair.zonneplan.api_key.auto_send.hint">Stuur batterijdata automatisch naar Onbalansmarkt wanneer deze via flow card ontvangen wordt</small>
-        </div>
       </fieldset>
 
       <!-- Submit Button -->
@@ -66,7 +59,6 @@
     const deviceNameInput = document.getElementById('deviceName');
     const tradingModeSelect = document.getElementById('tradingMode');
     const apiKeyInput = document.getElementById('apiKey');
-    const autoSendCheckbox = document.getElementById('autoSend');
     const submitButton = form.querySelector('button[type="submit"]');
 
     form.addEventListener('submit', async (e) => {
@@ -75,7 +67,6 @@
       const deviceName = deviceNameInput.value.trim();
       const tradingMode = tradingModeSelect.value;
       const apiKey = apiKeyInput.value.trim();
-      const autoSend = autoSendCheckbox.checked;
 
       // Validate required fields
       if (!deviceName) {
@@ -110,7 +101,6 @@
           deviceName,
           tradingMode,
           apiKey,
-          autoSend,
         });
 
         // Complete pairing (no more views needed)
