@@ -1,0 +1,22 @@
+{
+  "id": "onbalansmarkt_next_livesend",
+  "type": "number",
+  "title": {
+    "en": "Next Scheduled Send",
+    "nl": "Volgende Geplande Verzending"
+  },
+  "description": {
+    "en": "Minutes until next scheduled measurement send to Onbalansmarkt",
+    "nl": "Minuten tot volgende geplande metingverzending naar Onbalansmarkt"
+  },
+  "units": {
+    "en": "min",
+    "nl": "min"
+  },
+  "decimals": 0,
+  "insights": false,
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "icon": "/assets/capabilities/onbalansmarkt_next_livesend.svg"
+}

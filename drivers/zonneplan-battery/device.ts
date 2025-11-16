@@ -22,6 +22,7 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
   private onbalansmarktClient: OnbalansmarktClient | null = null;
   private profilePollerHandle: NodeJS.Timeout | null = null;
   private measurementsSchedulerHandle: NodeJS.Timeout | null = null;
+  private countdownTimerHandle: NodeJS.Timeout | null = null;
   private lastReceivedMetrics: ZonneplanMetrics | null = null;
 
   async onInit() {
@@ -121,6 +122,9 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
 
     this.log(`Measurements scheduler will first run in ${timeToFirstSend}ms, then every ${intervalMinutes} minutes`);
 
+    // Start countdown timer
+    this.startCountdownTimer();
+
     // Schedule first run
     const firstRunHandle = this.homey.setTimeout(async () => {
       await this.sendScheduledMeasurement();
@@ -146,6 +150,75 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
       this.homey.clearTimeout(this.measurementsSchedulerHandle);
       this.measurementsSchedulerHandle = null;
       this.log('Measurements scheduler stopped');
+    }
+    // Stop countdown timer
+    this.stopCountdownTimer();
+  }
+
+  /**
+   * Start countdown timer for next scheduled send
+   */
+  private startCountdownTimer() {
+    this.stopCountdownTimer();
+
+    // Update immediately
+    this.updateCountdownDisplay();
+
+    // Then update every 10 seconds
+    this.countdownTimerHandle = this.homey.setInterval(() => {
+      this.updateCountdownDisplay();
+    }, 10000); // Update every 10 seconds for smooth countdown
+
+    this.log('Countdown timer started');
+  }
+
+  /**
+   * Stop countdown timer
+   */
+  private stopCountdownTimer() {
+    if (this.countdownTimerHandle) {
+      this.homey.clearInterval(this.countdownTimerHandle);
+      this.countdownTimerHandle = null;
+      this.log('Countdown timer stopped');
+    }
+  }
+
+  /**
+   * Update countdown display with minutes until next send
+   */
+  private async updateCountdownDisplay() {
+    const now = new Date();
+    const startMinute = (this.getSetting('measurements_send_start_minute') || 0) as number;
+    const intervalMinutes = (this.getSetting('measurements_send_interval') || 15) as number;
+
+    // Calculate next send time
+    const currentMinute = now.getMinutes();
+    let nextMinute = startMinute;
+
+    if (currentMinute < startMinute) {
+      nextMinute = startMinute;
+    } else {
+      nextMinute = startMinute;
+      while (nextMinute <= currentMinute) {
+        nextMinute += intervalMinutes;
+      }
+    }
+
+    const nextSendTime = new Date(now);
+    nextSendTime.setMinutes(nextMinute, 0, 0);
+
+    if (nextSendTime <= now) {
+      nextSendTime.setMinutes(nextSendTime.getMinutes() + intervalMinutes);
+    }
+
+    // Calculate minutes remaining
+    const msRemaining = nextSendTime.getTime() - now.getTime();
+    const minutesRemaining = Math.ceil(msRemaining / 60000);
+
+    try {
+      await this.setCapabilityValue('onbalansmarkt_next_livesend', Math.max(0, minutesRemaining));
+    } catch (error) {
+      this.error('Failed to update countdown timer:', error);
     }
   }
 
@@ -264,6 +337,7 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
       { name: 'zonneplan_last_update', value: 'Never' }, // Persistent - only set if capability is new
       { name: 'zonneplan_overall_rank', value: 0 },
       { name: 'zonneplan_provider_rank', value: 0 },
+      { name: 'onbalansmarkt_next_livesend', value: 0 }, // Countdown to next scheduled send
     ];
 
     for (const cap of capabilities) {
