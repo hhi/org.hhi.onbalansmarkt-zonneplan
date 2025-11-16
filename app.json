@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "org.hhi.onbalansmarkt-zonneplan",
-  "version": "0.2.0",
+  "version": "0.30",
   "compatibility": ">=12.4.0",
   "sdk": 3,
   "platforms": [
@@ -566,7 +566,7 @@
       "decimals": 2,
       "chartType": "stepLine",
       "uiComponent": "sensor",
-      "icon": "/assets/capabilities/frank_energie_trading_result.svg"
+      "icon": "/assets/capabilities/zonneplan_trading_result.svg"
     },
     "zonneplan_last_update": {
       "id": "zonneplan_last_update",
@@ -584,7 +584,7 @@
       "getable": true,
       "setable": false,
       "uiComponent": "sensor",
-      "icon": "/assets/capabilities/frank_energie_next_poll_minutes.svg"
+      "icon": "/assets/capabilities/zonneplan_next_poll_minutes.svg"
     },
     "zonneplan_load_balancing": {
       "id": "zonneplan_load_balancing",
@@ -602,7 +602,7 @@
       "getable": true,
       "setable": false,
       "uiComponent": "sensor",
-      "icon": "/assets/capabilities/frank_energie_battery_charge.svg"
+      "icon": "/assets/capabilities/zonneplan_battery_charge.svg"
     },
     "zonneplan_overall_rank": {
       "id": "zonneplan_overall_rank",
@@ -615,7 +615,7 @@
         "en": "User's overall ranking position on Onbalansmarkt",
         "nl": "Positie van de gebruiker in de algehele ranglijst op Onbalansmarkt"
       },
-      "icon": "/assets/capabilities/frank_energie_overall_rank.svg",
+      "icon": "/assets/capabilities/zonneplan_overall_rank.svg",
       "min": 1,
       "decimals": 0,
       "getable": true,
@@ -632,7 +632,7 @@
         "en": "User's ranking position among Zonneplan users on Onbalansmarkt",
         "nl": "Positie van de gebruiker onder Zonneplan gebruikers op Onbalansmarkt"
       },
-      "icon": "/assets/capabilities/frank_energie_provider_rank.svg",
+      "icon": "/assets/capabilities/zonneplan_provider_rank.svg",
       "min": 1,
       "decimals": 0,
       "getable": true,
@@ -657,7 +657,7 @@
       "decimals": 2,
       "chartType": "spline",
       "uiComponent": "sensor",
-      "icon": "/assets/capabilities/frank_energie_lifetime_total.svg"
+      "icon": "/assets/capabilities/zonneplan_lifetime_total.svg"
     }
   }
 }

@@ -14,5 +14,5 @@
   "getable": true,
   "setable": false,
   "uiComponent": "sensor",
-  "icon": "/assets/capabilities/frank_energie_battery_charge.svg"
+  "icon": "/assets/capabilities/zonneplan_battery_charge.svg"
 }

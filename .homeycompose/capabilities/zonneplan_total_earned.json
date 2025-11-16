@@ -17,5 +17,5 @@
   "decimals": 2,
   "chartType": "spline",
   "uiComponent": "sensor",
-  "icon": "/assets/capabilities/frank_energie_lifetime_total.svg"
+  "icon": "/assets/capabilities/zonneplan_lifetime_total.svg"
 }

@@ -1,6 +1,6 @@
 {
   "id": "org.hhi.onbalansmarkt-zonneplan",
-  "version": "0.3.0",
+  "version": "0.30",
   "compatibility": ">=12.4.0",
   "sdk": 3,
   "platforms": [
