@@ -1,4 +1,8 @@
 {
+  "0.4.2": {
+    "en": "Added metrics persistence for restart resilience and test simulation mode. Metrics now survive app restarts/updates. Added TEST SIMULATION for live measurements without API calls for testing and debugging.",
+    "nl": "Metrieke persistentie voor restart-resistentie en test simulatiemodus toegevoegd. Metrieken overleven nu app-herstart/updates. TEST SIMULATIE voor live metingen zonder API-aanroepen toegevoegd voor testen en debugging."
+  },
   "0.4.1": {
     "en": "Fixed pairing process by implementing proper Homey pairing flow. Enhanced logging and error handling during device configuration.",
     "nl": "Paringsproces gefixeerd door implementatie van juiste Homey pairing flow. Verbeterde logging en foutafhandeling tijdens apparaatconfiguratie."
