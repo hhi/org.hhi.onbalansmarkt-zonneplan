@@ -37,6 +37,9 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
     // Initialize capabilities with default values if not set
     await this.initializeCapabilities();
 
+    // Restore last received metrics from persistent storage
+    await this.restoreLastReceivedMetrics();
+
     // Start profile poller if API key is configured
     this.startProfilePoller();
 
@@ -415,6 +418,9 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
     // Store the latest metrics for scheduled sending
     this.lastReceivedMetrics = metrics;
 
+    // Persist metrics to Store for recovery after app restart
+    await this.saveMetricsToStore(metrics);
+
     // Update all capabilities
     await this.updateCapabilities(metrics);
 
@@ -650,6 +656,127 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
     if (changedKeys.includes('total_earned_offset')) {
       this.log('Total earned offset changed to:', newSettings.total_earned_offset);
     }
+  }
+
+  /**
+   * Save metrics to persistent Store for recovery after restart
+   */
+  private async saveMetricsToStore(metrics: ZonneplanMetrics): Promise<void> {
+    try {
+      await this.setStoreValue('lastReceivedMetrics', {
+        dailyEarned: metrics.dailyEarned,
+        totalEarned: metrics.totalEarned,
+        dailyCharged: metrics.dailyCharged,
+        dailyDischarged: metrics.dailyDischarged,
+        batteryPercentage: metrics.batteryPercentage,
+        cycleCount: metrics.cycleCount,
+        loadBalancingActive: metrics.loadBalancingActive,
+        timestamp: metrics.timestamp.toISOString(),
+      });
+    } catch (error) {
+      this.error('Failed to save metrics to Store:', error);
+    }
+  }
+
+  /**
+   * Restore last received metrics from persistent Store
+   * Called during onInit() to restore state after app restart
+   */
+  private async restoreLastReceivedMetrics(): Promise<void> {
+    try {
+      // Try to restore from Store first
+      const stored = this.getStoreValue('lastReceivedMetrics');
+
+      if (stored && typeof stored === 'object') {
+        const storedMetrics = stored as {
+          dailyEarned?: number;
+          totalEarned?: number;
+          dailyCharged?: number;
+          dailyDischarged?: number;
+          batteryPercentage?: number;
+          cycleCount?: number;
+          loadBalancingActive?: boolean;
+          timestamp?: string;
+        };
+
+        this.lastReceivedMetrics = {
+          dailyEarned: storedMetrics.dailyEarned || 0,
+          totalEarned: storedMetrics.totalEarned || 0,
+          dailyCharged: storedMetrics.dailyCharged || 0,
+          dailyDischarged: storedMetrics.dailyDischarged || 0,
+          batteryPercentage: storedMetrics.batteryPercentage || 0,
+          cycleCount: storedMetrics.cycleCount || 0,
+          loadBalancingActive: storedMetrics.loadBalancingActive || false,
+          timestamp: storedMetrics.timestamp ? new Date(storedMetrics.timestamp) : new Date(),
+        };
+
+        // Check if metrics are stale (older than 24 hours)
+        if (this.isMetricsStale()) {
+          this.log('Restored metrics are stale (>24h), will use as fallback only');
+        } else {
+          this.log('Restored lastReceivedMetrics from Store successfully');
+        }
+        return;
+      }
+
+      // Fallback: reconstruct from capability values if Store is empty
+      const reconstructed = this.reconstructMetricsFromCapabilities();
+      if (reconstructed) {
+        this.lastReceivedMetrics = reconstructed;
+        this.log('Reconstructed metrics from capability values as fallback');
+      }
+    } catch (error) {
+      this.error('Error restoring metrics from Store:', error);
+      // Fallback: try to reconstruct from capabilities
+      const reconstructed = this.reconstructMetricsFromCapabilities();
+      if (reconstructed) {
+        this.lastReceivedMetrics = reconstructed;
+        this.log('Fallback: reconstructed metrics from capabilities');
+      }
+    }
+  }
+
+  /**
+   * Reconstruct metrics from current capability values (fallback method)
+   * Less precise than stored metrics but better than nothing
+   */
+  private reconstructMetricsFromCapabilities(): ZonneplanMetrics | null {
+    try {
+      const dailyEarned = this.getCapabilityValue('zonneplan_daily_earned');
+
+      // Only reconstruct if we have at least some data
+      if (dailyEarned === null || dailyEarned === undefined) {
+        return null;
+      }
+
+      return {
+        dailyEarned: dailyEarned as number,
+        totalEarned: (this.getCapabilityValue('zonneplan_total_earned') as number) || 0,
+        dailyCharged: (this.getCapabilityValue('zonneplan_daily_charged') as number) || 0,
+        dailyDischarged: (this.getCapabilityValue('zonneplan_daily_discharged') as number) || 0,
+        batteryPercentage: (this.getCapabilityValue('measure_battery') as number) || 0,
+        cycleCount: (this.getCapabilityValue('zonneplan_cycle_count') as number) || 0,
+        loadBalancingActive: (this.getCapabilityValue('zonneplan_load_balancing') as boolean) || false,
+        timestamp: new Date(), // Use current time as approximation
+      };
+    } catch (error) {
+      this.error('Error reconstructing metrics from capabilities:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Check if restored metrics are stale (older than 24 hours)
+   */
+  private isMetricsStale(): boolean {
+    if (!this.lastReceivedMetrics) {
+      return true;
+    }
+
+    const ageMs = Date.now() - this.lastReceivedMetrics.timestamp.getTime();
+    const maxAgeMs = 24 * 60 * 60 * 1000; // 24 hours
+
+    return ageMs > maxAgeMs;
   }
 
   /**
