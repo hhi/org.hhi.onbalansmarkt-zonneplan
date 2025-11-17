@@ -216,13 +216,13 @@
         "id": "trigger_live_send",
         "type": "checkbox",
         "label": {
-          "en": "Send Live Measurement Now",
-          "nl": "Verstuur nu Live Meting"
+          "en": "🧪 Test Live Measurement (Simulation)",
+          "nl": "🧪 Test Live Meting (Simulatie)"
         },
         "value": false,
         "hint": {
-          "en": "Toggle this setting ON to simulate a live send measurement to Onbalansmarkt using current metrics. Requires API key and previously received metrics. Will automatically turn OFF after sending.",
-          "nl": "Zet deze instelling AAN om een live meting naar Onbalansmarkt te simuleren met huidige metreken. Vereist API-sleutel en eerder ontvangen metrieken. Schakelt automatisch UIT na verzending."
+          "en": "Toggle this setting ON to run a TEST SIMULATION of a live send measurement. No data is sent to Onbalansmarkt - only logging. Requires previously received metrics. Will automatically turn OFF after test completes.",
+          "nl": "Zet deze instelling AAN om een TEST SIMULATIE van een live meting uit te voeren. Geen data wordt naar Onbalansmarkt verzonden - alleen logging. Vereist eerder ontvangen metrieken. Schakelt automatisch UIT na test."
         }
       }
     ]

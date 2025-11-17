@@ -568,6 +568,47 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
   }
 
   /**
+   * Simulate live measurement (TEST MODE - no actual API call)
+   * Same logging as sendLiveMeasurement but without sending to Onbalansmarkt
+   */
+  private async simulateLiveMeasurement(metrics: ZonneplanMetrics): Promise<void> {
+    this.log('═'.repeat(60));
+    this.log('🧪 SIMULATED LIVE MEASUREMENT TEST');
+    this.log('═'.repeat(60));
+    this.log('NOTE: This is a TEST SIMULATION - no data sent to Onbalansmarkt.com');
+    this.log('═'.repeat(60));
+
+    try {
+      const tradingMode = this.getSetting('trading_mode') || 'manual';
+      const offset = this.getSetting('total_earned_offset') || 0;
+      const deviceName = this.getName();
+
+      this.log(`Device: ${deviceName}`);
+      this.log(`Trading Mode: ${tradingMode}`);
+      this.log(`Timestamp: ${metrics.timestamp.toISOString()}`);
+      this.log('-'.repeat(60));
+      this.log('Metrics that WOULD be sent:');
+      this.log(`  Daily Earned: €${metrics.dailyEarned}`);
+      this.log(`  Total Earned: €${metrics.totalEarned + offset} (with offset: ${offset})`);
+      this.log(`  Daily Charged: ${metrics.dailyCharged} kWh`);
+      this.log(`  Daily Discharged: ${metrics.dailyDischarged} kWh`);
+      this.log(`  Battery Charge: ${metrics.batteryPercentage}%`);
+      this.log(`  Cycle Count: ${metrics.cycleCount}`);
+      this.log(`  Load Balancing: ${metrics.loadBalancingActive ? 'ON' : 'OFF'}`);
+      this.log('-'.repeat(60));
+
+      this.log('✓ Simulation completed successfully');
+      this.log('✓ In production, this data WOULD be sent to Onbalansmarkt.com');
+      this.log('═'.repeat(60));
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+      this.error('✗ Simulation test failed:', errorMsg);
+      this.log('═'.repeat(60));
+      throw error;
+    }
+  }
+
+  /**
    * Emit trigger card when metrics are updated
    */
   private async emitMetricsUpdatedTrigger(metrics: ZonneplanMetrics) {
@@ -600,24 +641,24 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
   }): Promise<string | void> {
     this.log('Settings updated:', changedKeys);
 
-    // Handle trigger live send checkbox
+    // Handle trigger live send checkbox (simulation test mode)
     if (changedKeys.includes('trigger_live_send') && newSettings.trigger_live_send === true) {
-      this.log('Live send trigger activated via settings');
+      this.log('Live send simulation test triggered via settings');
       if (!this.lastReceivedMetrics) {
-        const errorMsg = 'No metrics available for live send - please receive metrics first';
+        const errorMsg = 'No metrics available for simulation - please receive metrics first';
         this.log('ERROR:', errorMsg);
-        // Turn off the setting since we can't send
+        // Turn off the setting since we can't simulate
         await this.setSettings({ trigger_live_send: false });
         throw new Error(errorMsg);
       }
 
       try {
-        await this.sendLiveMeasurement(this.lastReceivedMetrics);
-        // Turn off the setting after successful send
+        await this.simulateLiveMeasurement(this.lastReceivedMetrics);
+        // Turn off the setting after successful simulation
         await this.setSettings({ trigger_live_send: false });
       } catch (error) {
-        const errorMsg = error instanceof Error ? error.message : 'Failed to send live measurement';
-        this.log('ERROR during live send:', errorMsg);
+        const errorMsg = error instanceof Error ? error.message : 'Failed to run simulation test';
+        this.log('ERROR during simulation:', errorMsg);
         // Turn off the setting on error too
         await this.setSettings({ trigger_live_send: false });
         throw error;
