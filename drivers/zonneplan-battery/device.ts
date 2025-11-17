@@ -368,9 +368,10 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
   }
 
   /**
-   * Register flow card action handler
+   * Register flow card action handlers
    */
   private registerFlowCardHandler() {
+    // Handler for receiving metrics from Zonneplan
     const receiveMetricsCard = this.homey.flow.getActionCard('receive_zonneplan_metrics');
     receiveMetricsCard.registerRunListener(async (args) => {
       this.log('Received Zonneplan metrics via flow card');
@@ -387,6 +388,20 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
       };
 
       await this.handleReceivedMetrics(metrics);
+      return true;
+    });
+
+    // Handler for sending live measurement
+    const sendLiveCard = this.homey.flow.getActionCard('send_live_measurement');
+    sendLiveCard.registerRunListener(async (args) => {
+      this.log('Send live measurement action triggered');
+
+      if (!this.lastReceivedMetrics) {
+        this.log('No metrics available for live send - please receive metrics first');
+        throw new Error('No metrics available. Please receive Zonneplan metrics first.');
+      }
+
+      await this.sendLiveMeasurement(this.lastReceivedMetrics);
       return true;
     });
   }
@@ -489,6 +504,64 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
   }
 
   /**
+   * Send live measurement (simulated for testing)
+   * Similar to sendToOnbalansmarkt but with enhanced logging
+   */
+  private async sendLiveMeasurement(metrics: ZonneplanMetrics) {
+    this.log('='.repeat(60));
+    this.log('LIVE MEASUREMENT SEND INITIATED');
+    this.log('='.repeat(60));
+
+    if (!this.onbalansmarktClient) {
+      this.log('ERROR: Onbalansmarkt client not initialized');
+      this.log('Please configure an API key in device settings');
+      throw new Error('Onbalansmarkt API key not configured');
+    }
+
+    try {
+      const tradingMode = this.getSetting('trading_mode') || 'manual';
+      const offset = this.getSetting('total_earned_offset') || 0;
+      const deviceName = this.getName();
+
+      this.log(`Device: ${deviceName}`);
+      this.log(`Trading Mode: ${tradingMode}`);
+      this.log(`Timestamp: ${metrics.timestamp.toISOString()}`);
+      this.log('-'.repeat(60));
+      this.log('Metrics being sent:');
+      this.log(`  Daily Earned: €${metrics.dailyEarned}`);
+      this.log(`  Total Earned: €${metrics.totalEarned + offset} (with offset: ${offset})`);
+      this.log(`  Daily Charged: ${metrics.dailyCharged} kWh`);
+      this.log(`  Daily Discharged: ${metrics.dailyDischarged} kWh`);
+      this.log(`  Battery Charge: ${metrics.batteryPercentage}%`);
+      this.log(`  Cycle Count: ${metrics.cycleCount}`);
+      this.log(`  Load Balancing: ${metrics.loadBalancingActive ? 'ON' : 'OFF'}`);
+      this.log('-'.repeat(60));
+
+      this.log('Sending to Onbalansmarkt.com...');
+
+      await this.onbalansmarktClient.sendMeasurement({
+        timestamp: metrics.timestamp,
+        batteryResult: metrics.dailyEarned,
+        batteryResultTotal: metrics.totalEarned + offset,
+        batteryCharge: metrics.batteryPercentage,
+        chargedToday: metrics.dailyCharged > 0 ? Math.round(metrics.dailyCharged) : undefined,
+        dischargedToday: metrics.dailyDischarged > 0 ? Math.round(metrics.dailyDischarged) : undefined,
+        totalBatteryCycles: metrics.cycleCount > 0 ? metrics.cycleCount : undefined,
+        loadBalancingActive: metrics.loadBalancingActive ? 'on' : 'off',
+        mode: tradingMode as 'imbalance' | 'imbalance_aggressive' | 'self_consumption_plus' | 'manual',
+      });
+
+      this.log('✓ Successfully sent live measurement to Onbalansmarkt.com');
+      this.log('='.repeat(60));
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+      this.error('✗ Failed to send live measurement:', errorMsg);
+      this.log('='.repeat(60));
+      throw error;
+    }
+  }
+
+  /**
    * Emit trigger card when metrics are updated
    */
   private async emitMetricsUpdatedTrigger(metrics: ZonneplanMetrics) {
@@ -520,6 +593,30 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
     changedKeys: string[];
   }): Promise<string | void> {
     this.log('Settings updated:', changedKeys);
+
+    // Handle trigger live send checkbox
+    if (changedKeys.includes('trigger_live_send') && newSettings.trigger_live_send === true) {
+      this.log('Live send trigger activated via settings');
+      if (!this.lastReceivedMetrics) {
+        const errorMsg = 'No metrics available for live send - please receive metrics first';
+        this.log('ERROR:', errorMsg);
+        // Turn off the setting since we can't send
+        await this.setSettings({ trigger_live_send: false });
+        throw new Error(errorMsg);
+      }
+
+      try {
+        await this.sendLiveMeasurement(this.lastReceivedMetrics);
+        // Turn off the setting after successful send
+        await this.setSettings({ trigger_live_send: false });
+      } catch (error) {
+        const errorMsg = error instanceof Error ? error.message : 'Failed to send live measurement';
+        this.log('ERROR during live send:', errorMsg);
+        // Turn off the setting on error too
+        await this.setSettings({ trigger_live_send: false });
+        throw error;
+      }
+    }
 
     // Reinitialize Onbalansmarkt client if API key changed
     if (changedKeys.includes('onbalansmarkt_api_key')) {

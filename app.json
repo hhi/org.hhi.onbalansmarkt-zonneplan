@@ -258,6 +258,28 @@
             "required": false
           }
         ]
+      },
+      {
+        "id": "send_live_measurement",
+        "title": {
+          "en": "Send live measurement to Onbalansmarkt",
+          "nl": "Verstuur live meting naar Onbalansmarkt"
+        },
+        "titleFormatted": {
+          "en": "Send current battery metrics to Onbalansmarkt",
+          "nl": "Verstuur huidige batterijmetreken naar Onbalansmarkt"
+        },
+        "hint": {
+          "en": "Immediately sends the current battery metrics to Onbalansmarkt.com as a live measurement. Useful for testing and manual sends. Requires an API key to be configured.",
+          "nl": "Verzendt direct de huidige batterijmetreken naar Onbalansmarkt.com als live meting. Nuttig voor testen en handmatig versturen. Vereist een geconfigureerde API sleutel."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=zonneplan-battery"
+          }
+        ]
       }
     ]
   },
@@ -513,6 +535,28 @@
               "hint": {
                 "en": "Exclude this device from the Homey Energy dashboard",
                 "nl": "Dit apparaat uitsluiten van het Homey Energie dashboard"
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Testing & Debug",
+            "nl": "Testen & Debug"
+          },
+          "children": [
+            {
+              "id": "trigger_live_send",
+              "type": "checkbox",
+              "label": {
+                "en": "Send Live Measurement Now",
+                "nl": "Verstuur nu Live Meting"
+              },
+              "value": false,
+              "hint": {
+                "en": "Toggle this setting ON to simulate a live send measurement to Onbalansmarkt using current metrics. Requires API key and previously received metrics. Will automatically turn OFF after sending.",
+                "nl": "Zet deze instelling AAN om een live meting naar Onbalansmarkt te simuleren met huidige metreken. Vereist API-sleutel en eerder ontvangen metrieken. Schakelt automatisch UIT na verzending."
               }
             }
           ]
