@@ -14,7 +14,10 @@
     "zonneplan_load_balancing",
     "zonneplan_last_update",
     "zonneplan_overall_rank",
-    "zonneplan_provider_rank"
+    "zonneplan_provider_rank",
+    "zonneplan_reported_charged",
+    "zonneplan_reported_discharged",
+    "onbalansmarkt_next_livesend"
   ],
   "platforms": [
     "local"
