@@ -1,4 +1,8 @@
 {
+  "0.4.3": {
+    "en": "Fixed onSettings handler using deferred processing pattern to prevent Homey timeout issues. Test simulation now works without previously received metrics (generates test data). Improved error handling and logging for simulation mode. Enhanced README documentation with test mode and detailed settings guide.",
+    "nl": "onSettings handler gefixeerd met deferred processing patroon om Homey timeout-problemen te voorkomen. Testsimulatie werkt nu zonder eerder ontvangen metrieken (genereert testgegevens). Verbeterde foutafhandeling en logging voor simulatiemodus. Verbeterde README-documentatie met testmodus en gedetailleerde instellingengids."
+  },
   "0.4.2": {
     "en": "Added metrics persistence for restart resilience and test simulation mode. Metrics now survive app restarts/updates. Added TEST SIMULATION for live measurements without API calls for testing and debugging.",
     "nl": "Metrieke persistentie voor restart-resistentie en test simulatiemodus toegevoegd. Metrieken overleven nu app-herstart/updates. TEST SIMULATIE voor live metingen zonder API-aanroepen toegevoegd voor testen en debugging."

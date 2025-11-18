@@ -396,7 +396,7 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
 
     // Handler for sending live measurement
     const sendLiveCard = this.homey.flow.getActionCard('send_live_measurement');
-    sendLiveCard.registerRunListener(async (args) => {
+    sendLiveCard.registerRunListener(async () => {
       this.log('Send live measurement action triggered');
 
       if (!this.lastReceivedMetrics) {
@@ -634,39 +634,46 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
 
   /**
    * Handle settings updates
+   * Uses deferred processing pattern to avoid blocking Homey's settings handler
    */
   async onSettings({ newSettings, changedKeys }: {
     newSettings: { [key: string]: unknown };
     changedKeys: string[];
   }): Promise<string | void> {
-    this.log('Settings updated:', changedKeys);
+    this.log('[onSettings] === ENTRY POINT === changedKeys:', JSON.stringify(changedKeys));
 
     // Handle trigger live send checkbox (simulation test mode)
     if (changedKeys.includes('trigger_live_send') && newSettings.trigger_live_send === true) {
-      this.log('Live send simulation test triggered via settings');
-      if (!this.lastReceivedMetrics) {
-        const errorMsg = 'No metrics available for simulation - please receive metrics first';
-        this.log('ERROR:', errorMsg);
-        // Turn off the setting since we can't simulate
-        await this.setSettings({ trigger_live_send: false });
-        throw new Error(errorMsg);
-      }
+      this.log('[SETTINGS] Live send simulation test triggered via settings');
 
-      try {
-        await this.simulateLiveMeasurement(this.lastReceivedMetrics);
-        // Turn off the setting after successful simulation
-        await this.setSettings({ trigger_live_send: false });
-      } catch (error) {
-        const errorMsg = error instanceof Error ? error.message : 'Failed to run simulation test';
-        this.log('ERROR during simulation:', errorMsg);
-        // Turn off the setting on error too
-        await this.setSettings({ trigger_live_send: false });
-        throw error;
-      }
+      // Defer the actual simulation to avoid blocking onSettings
+      // This prevents Homey from timing out the settings handler
+      this.homey.setTimeout(async () => {
+        this.log('[DEFERRED] Starting simulation test');
+        try {
+          // Use stored metrics if available, otherwise use test data
+          const metricsToSimulate = this.lastReceivedMetrics || this.generateTestMetrics();
+
+          await this.simulateLiveMeasurement(metricsToSimulate);
+          this.log('[DEFERRED] Simulation test completed successfully');
+        } catch (error) {
+          const errorMsg = error instanceof Error ? error.message : 'Failed to run simulation test';
+          this.error('[DEFERRED] Simulation test failed:', errorMsg);
+        } finally {
+          // Always turn off the setting after test completes
+          await this.setSettings({ trigger_live_send: false })
+            .catch((err) => this.error('Failed to reset trigger_live_send:', err));
+        }
+      }, 10);
+
+      // Return immediately without awaiting - Homey handles settings immediately
+      this.log('[SETTINGS] Returning from onSettings immediately');
+      return;
     }
 
     // Reinitialize Onbalansmarkt client if API key changed
     if (changedKeys.includes('onbalansmarkt_api_key')) {
+      this.log('API key changed - reinitializing Onbalansmarkt client');
       this.initializeOnbalansmarktClient();
       this.startProfilePoller();
       this.startMeasurementsScheduler();
@@ -697,6 +704,24 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
     if (changedKeys.includes('total_earned_offset')) {
       this.log('Total earned offset changed to:', newSettings.total_earned_offset);
     }
+  }
+
+  /**
+   * Generate test metrics for simulation when no real metrics are available
+   * Useful for testing the flow without receiving actual Zonneplan data
+   */
+  private generateTestMetrics(): ZonneplanMetrics {
+    this.log('No metrics available - generating test data for simulation');
+    return {
+      dailyEarned: 0.35,
+      totalEarned: 127.50,
+      dailyCharged: 12.5,
+      dailyDischarged: 8.3,
+      batteryPercentage: 73,
+      cycleCount: 42,
+      loadBalancingActive: true,
+      timestamp: new Date(),
+    };
   }
 
   /**

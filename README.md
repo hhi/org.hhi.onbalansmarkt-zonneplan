@@ -21,6 +21,7 @@ This Homey app enables Zonneplan battery users to send their trading results to 
 - **Trading Mode**: Manual selection of trading mode (Imbalance, Imbalance Aggressive, Self Consumption Plus, Manual)
 - **Battery Metrics**: Track daily earnings, lifetime total, charge/discharge values, battery cycles, and load balancing status
 - **Countdown Timer**: Visual indicator showing minutes until next scheduled measurement send
+- **Test/Simulation Mode**: Test the live measurement flow without sending data to Onbalansmarkt (uses test data if real metrics unavailable)
 
 ## Requirements
 
@@ -47,27 +48,37 @@ When adding the Zonneplan Battery device:
 
 ### Device Settings
 
+**Device Configuration:**
 - **Device Name**: Display name for the battery device
 - **Trading Mode**: Trading mode selection (manual, imbalance, imbalance_aggressive, self_consumption_plus)
-- **Total Earned Offset**: Manual offset to correct lifetime total (in €)
-- **API Key**: Onbalansmarkt.com API key (optional)
-- **Poll Interval**: Interval for polling user profile/rankings from Onbalansmarkt (default: 5 minutes)
-- **Auto-send Measurements**: Enable to automatically send data to Onbalansmarkt when received via flow card
-- **Scheduled Send Enabled**: Enable automatic scheduled measurements sending
-- **Scheduled Send Interval**: Interval for scheduled measurements (default: 15 minutes)
-- **Scheduled Send Start Minute**: Start minute of the hour for scheduled sends (default: 0)
-- **Report Zero Trading Results**: Enable to send measurements even when daily earnings are zero
-- **Exclude from Energy**: Exclude device from Homey Energy dashboard
+- **Total Earned Offset (€)**: Manual offset to correct lifetime total earnings (in €)
+
+**Onbalansmarkt Integration:**
+- **API Key**: Onbalansmarkt.com API key (optional, required for sending data)
+- **Poll Interval (seconds)**: Interval for polling user profile/rankings from Onbalansmarkt (default: 300s = 5 minutes)
+- **Enable Scheduled Measurements**: Enable automatic scheduled measurements sending at configured intervals
+- **Send Interval (minutes)**: Interval for scheduled measurements (default: 15 minutes, range: 5-1440)
+- **Start Minute (0-59)**: Start minute of the hour for scheduled sends (default: 0, e.g., minute 0 = :00 past each hour)
+
+**Advanced:**
+- **Report Zero Trading Results**: Enable to send measurements even when daily earnings are €0 (default: disabled)
+
+**Energy Dashboard:**
+- **Exclude from Energy**: Exclude device from Homey Energy dashboard (default: enabled)
+
+**Testing & Debug:**
+- **🧪 Test Live Measurement (Simulation)**: Toggle ON to run a test simulation of live measurement sending. No data sent to Onbalansmarkt. Uses real metrics if available, otherwise generates test data. Automatically turns OFF after test completes.
 
 ## Flow Cards
 
 ### Actions
 
-- **Receive Zonneplan Metrics** - Receive battery metrics from your Zonneplan battery and optionally send to Onbalansmarkt
+- **Receive Zonneplan Metrics** - Receive battery metrics from your Zonneplan battery and optionally send to Onbalansmarkt (based on device settings)
+- **Send Live Measurement** - Manually send the last received metrics to Onbalansmarkt (requires previously received metrics)
 
 ### Triggers
 
-- **Zonneplan Metrics Updated** - Triggers when new metrics are received
+- **Zonneplan Metrics Updated** - Triggers when new metrics are received (provides all metric tokens for flow conditions and downstream actions)
 
 ## Capabilities
 
@@ -96,16 +107,46 @@ The app provides the following custom capabilities:
 
 ## How to Use
 
+### Basic Setup
+
 1. **Install the Zonneplan Battery app** from the Homey App Store
-2. **Add Zonneplan Battery device** to this app with your desired trading mode and API key
+2. **Add Zonneplan Battery device** to this app with your desired trading mode and API key (optional)
 3. **Create a Homey Flow** to send battery metrics from Zonneplan to this app:
    - Trigger: When Zonneplan battery metrics update
    - Action: "Receive Zonneplan Metrics" → Select device → Map the values
-4. **Configure Sending Method** (choose one or both):
-   - **Auto-send on Flow**: Enable "Auto-send Measurements" to send data immediately when received
-   - **Scheduled Sending**: Enable "Scheduled Send Enabled" and configure interval/start time for regular automated sends
-5. **Optional**: Check the "Onbalansmarkt next Livesend" capability to see countdown to next scheduled send
-6. **Optional**: Enable "Report Zero Trading Results" if you want to send measurements even on zero-earning days
+
+### Sending Data to Onbalansmarkt
+
+Configure one or both sending methods:
+
+- **Auto-send on Flow**: Metrics are sent immediately when received via the flow card
+  - Enable in device settings: Device Settings → Onbalansmarkt Integration → Check "measurements_send_enabled"
+  - **Note**: Requires API key to be configured
+
+- **Scheduled Sending**: Metrics are sent automatically at regular intervals (e.g., every 15 minutes)
+  - Enable in device settings: Device Settings → Onbalansmarkt Integration → Check "measurements_send_enabled"
+  - Configure interval and start minute in related settings
+  - **Note**: Requires API key and previously received metrics
+
+### Optional Features
+
+- **Zero-Result Filtering**: Enable "Report Zero Trading Results" setting if you want to send measurements even on zero-earning days (default: disabled)
+- **Countdown Timer**: Check the "Onbalansmarkt next Livesend" capability to see minutes until next scheduled send
+- **Manual Sending**: Use the "Send Live Measurement" action card to manually send the last received metrics
+
+### Testing (Simulation Mode)
+
+Test the measurement flow without sending data to Onbalansmarkt:
+
+1. **First time testing**: Toggle the "🧪 Test Live Measurement (Simulation)" setting ON
+   - If no metrics have been received yet, the app automatically generates test data
+   - Simulation output appears in Homey's app logs
+
+2. **After receiving real metrics**: Toggle the setting ON again
+   - Uses the actual metrics you've received
+   - Helpful for verifying data before enabling live sending
+
+The setting automatically turns OFF after the test completes.
 
 ## Support
 
