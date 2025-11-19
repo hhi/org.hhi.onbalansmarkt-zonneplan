@@ -225,27 +225,53 @@ export class OnbalansmarktClient {
         throw new Error(`Expected JSON response but got ${contentType}. API may have changed or invalid API key.`);
       }
 
-      // API returns { username, name, results: [...] }
-      // Need to transform to { username, name, resultToday, resultYesterday }
+      // API structure (updated Nov 2025): { username, name, resultToday, resultYesterday }
+      // Direct result objects instead of array
       interface ApiResponse {
         username: string;
         name: string;
-        results: DailyResult[];
+        resultToday?: DailyResult | null;
+        resultYesterday?: DailyResult | null;
+        // Legacy support for older API structure
+        results?: DailyResult[];
+        profile?: {
+          results?: DailyResult[];
+        };
+        dailyResults?: DailyResult[];
+        [key: string]: unknown;
       }
 
       const apiResponse = (await response.json()) as ApiResponse;
 
-      // Get today's and yesterday's dates in YYYY-MM-DD format
-      const today = new Date();
-      const todayStr = today.toISOString().split('T')[0];
+      // Try new API structure first (direct resultToday/resultYesterday)
+      let resultToday: DailyResult | null = apiResponse.resultToday || null;
+      let resultYesterday: DailyResult | null = apiResponse.resultYesterday || null;
 
-      const yesterday = new Date(today);
-      yesterday.setDate(yesterday.getDate() - 1);
-      const yesterdayStr = yesterday.toISOString().split('T')[0];
+      // Fallback to legacy array-based structure if needed
+      if (!resultToday && !resultYesterday) {
+        let resultsArray: DailyResult[] | undefined = apiResponse.results;
 
-      // Find today's and yesterday's results from the array
-      const resultToday = apiResponse.results.find((r) => r.date === todayStr) || null;
-      const resultYesterday = apiResponse.results.find((r) => r.date === yesterdayStr) || null;
+        if (!resultsArray && apiResponse.profile?.results) {
+          resultsArray = apiResponse.profile.results;
+        }
+        if (!resultsArray && apiResponse.dailyResults) {
+          resultsArray = apiResponse.dailyResults;
+        }
+
+        if (resultsArray && Array.isArray(resultsArray)) {
+          // Get today's and yesterday's dates in YYYY-MM-DD format
+          const today = new Date();
+          const todayStr = today.toISOString().split('T')[0];
+
+          const yesterday = new Date(today);
+          yesterday.setDate(yesterday.getDate() - 1);
+          const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+          // Find today's and yesterday's results from the array
+          resultToday = resultsArray.find((r) => r.date === todayStr) || null;
+          resultYesterday = resultsArray.find((r) => r.date === yesterdayStr) || null;
+        }
+      }
 
       const profile: ProfileResponse = {
         username: apiResponse.username,
@@ -255,46 +281,36 @@ export class OnbalansmarktClient {
       };
 
       // Log comprehensive profile data including all available fields
-      const todayDetails = resultToday
-        ? `    batteryResult: €${resultToday.batteryResult}\n`
-        + `    batteryResultTotal: €${resultToday.batteryResultTotal}\n`
-        + `    batteryResultImbalance: €${resultToday.batteryResultImbalance}\n`
-        + `    batteryResultEpex: €${resultToday.batteryResultEpex}\n`
-        + `    batteryResultCustom: €${resultToday.batteryResultCustom}\n`
-        + `    solarResult: €${resultToday.solarResult}\n`
-        + `    chargerResult: €${resultToday.chargerResult}\n`
-        + `    batteryCharged: ${resultToday.batteryCharged}\n`
-        + `    batteryDischarged: ${resultToday.batteryDischarged}\n`
-        + `    type: ${resultToday.type}\n`
-        + `    mode: ${resultToday.mode}\n`
-        + `    overallRank: ${resultToday.overallRank}\n`
-        + `    providerRank: ${resultToday.providerRank}\n`
-        + `    note: ${resultToday.note || '(none)'}\n`
-        : '    (No data yet)\n';
-
-      const yesterdayDetails = resultYesterday
-        ? `    batteryResult: €${resultYesterday.batteryResult}\n`
-        + `    batteryResultTotal: €${resultYesterday.batteryResultTotal}\n`
-        + `    batteryResultImbalance: €${resultYesterday.batteryResultImbalance}\n`
-        + `    batteryResultEpex: €${resultYesterday.batteryResultEpex}\n`
-        + `    batteryResultCustom: €${resultYesterday.batteryResultCustom}\n`
-        + `    type: ${resultYesterday.type}\n`
-        + `    overallRank: ${resultYesterday.overallRank}\n`
-        + `    providerRank: ${resultYesterday.providerRank}\n`
-        : '    (No data yet)\n';
-
-      const logMessage = `
-📊 Onbalansmarkt Profile Data (from /api/me):
-  Account:
-    Username: ${profile.username}
-    Name: ${profile.name}
-
-  Today's Results (${resultToday?.date || 'N/A'}):
-${todayDetails}
-  Yesterday's Results (${resultYesterday?.date || 'N/A'}):
-${yesterdayDetails}`;
-
-      this.logger(logMessage);
+      this.logger(
+        `\n📊 Onbalansmarkt Profile Data (from /api/me):\n` +
+        `  Account:\n` +
+        `    Username: ${profile.username}\n` +
+        `    Name: ${profile.name}\n` +
+        `\n  Today's Results (${resultToday?.date || 'N/A'}):\n` +
+        (resultToday ? `    batteryResult: €${resultToday.batteryResult}\n` +
+        `    batteryResultTotal: €${resultToday.batteryResultTotal}\n` +
+        `    batteryResultImbalance: €${resultToday.batteryResultImbalance}\n` +
+        `    batteryResultEpex: €${resultToday.batteryResultEpex}\n` +
+        `    batteryResultCustom: €${resultToday.batteryResultCustom}\n` +
+        `    solarResult: €${resultToday.solarResult}\n` +
+        `    chargerResult: €${resultToday.chargerResult}\n` +
+        `    batteryCharged: ${resultToday.batteryCharged}\n` +
+        `    batteryDischarged: ${resultToday.batteryDischarged}\n` +
+        `    type: ${resultToday.type}\n` +
+        `    mode: ${resultToday.mode}\n` +
+        `    overallRank: ${resultToday.overallRank}\n` +
+        `    providerRank: ${resultToday.providerRank}\n` +
+        `    note: ${resultToday.note || '(none)'}` : '    (No data yet)\n') +
+        `\n  Yesterday's Results (${resultYesterday?.date || 'N/A'}):\n` +
+        (resultYesterday ? `    batteryResult: €${resultYesterday.batteryResult}\n` +
+        `    batteryResultTotal: €${resultYesterday.batteryResultTotal}\n` +
+        `    batteryResultImbalance: €${resultYesterday.batteryResultImbalance}\n` +
+        `    batteryResultEpex: €${resultYesterday.batteryResultEpex}\n` +
+        `    batteryResultCustom: €${resultYesterday.batteryResultCustom}\n` +
+        `    type: ${resultYesterday.type}\n` +
+        `    overallRank: ${resultYesterday.overallRank}\n` +
+        `    providerRank: ${resultYesterday.providerRank}` : '    (No data yet)\n'),
+      );
 
       return profile;
     } catch (error) {
