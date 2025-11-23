@@ -18,11 +18,15 @@ export default async function enableDebugInspector() {
     await (async () => {
       try {
         // Only import if needed
+        // eslint-disable-next-line node/no-unsupported-features/es-syntax
         const inspector: typeof import('inspector') = await import('inspector');
+        // eslint-disable-next-line no-console
         console.log('WaitForDebugger inspector for debugging');
         inspector.waitForDebugger();
       } catch (error) {
+        // eslint-disable-next-line node/no-unsupported-features/es-syntax
         const inspector: typeof import('inspector') = await import('inspector');
+        // eslint-disable-next-line no-console
         console.log('Open inspector for debugging');
         inspector.open(9225, '0.0.0.0', true);
       }

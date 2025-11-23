@@ -101,7 +101,7 @@ module.exports = class ZonnePlanApp extends Homey.App {
     } catch (error) {
       // Token doesn't exist, create it
       this.log(`Creating new token: ${id}`);
-      return await this.homey.flow.createToken(id, opts);
+      return this.homey.flow.createToken(id, opts);
     }
   }
 

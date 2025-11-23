@@ -282,34 +282,34 @@ export class OnbalansmarktClient {
 
       // Log comprehensive profile data including all available fields
       this.logger(
-        `\n📊 Onbalansmarkt Profile Data (from /api/me):\n` +
-        `  Account:\n` +
-        `    Username: ${profile.username}\n` +
-        `    Name: ${profile.name}\n` +
-        `\n  Today's Results (${resultToday?.date || 'N/A'}):\n` +
-        (resultToday ? `    batteryResult: €${resultToday.batteryResult}\n` +
-        `    batteryResultTotal: €${resultToday.batteryResultTotal}\n` +
-        `    batteryResultImbalance: €${resultToday.batteryResultImbalance}\n` +
-        `    batteryResultEpex: €${resultToday.batteryResultEpex}\n` +
-        `    batteryResultCustom: €${resultToday.batteryResultCustom}\n` +
-        `    solarResult: €${resultToday.solarResult}\n` +
-        `    chargerResult: €${resultToday.chargerResult}\n` +
-        `    batteryCharged: ${resultToday.batteryCharged}\n` +
-        `    batteryDischarged: ${resultToday.batteryDischarged}\n` +
-        `    type: ${resultToday.type}\n` +
-        `    mode: ${resultToday.mode}\n` +
-        `    overallRank: ${resultToday.overallRank}\n` +
-        `    providerRank: ${resultToday.providerRank}\n` +
-        `    note: ${resultToday.note || '(none)'}` : '    (No data yet)\n') +
-        `\n  Yesterday's Results (${resultYesterday?.date || 'N/A'}):\n` +
-        (resultYesterday ? `    batteryResult: €${resultYesterday.batteryResult}\n` +
-        `    batteryResultTotal: €${resultYesterday.batteryResultTotal}\n` +
-        `    batteryResultImbalance: €${resultYesterday.batteryResultImbalance}\n` +
-        `    batteryResultEpex: €${resultYesterday.batteryResultEpex}\n` +
-        `    batteryResultCustom: €${resultYesterday.batteryResultCustom}\n` +
-        `    type: ${resultYesterday.type}\n` +
-        `    overallRank: ${resultYesterday.overallRank}\n` +
-        `    providerRank: ${resultYesterday.providerRank}` : '    (No data yet)\n'),
+        `${'\n📊 Onbalansmarkt Profile Data (from /api/me):\n'
+        + '  Account:\n'
+        + `    Username: ${profile.username}\n`
+        + `    Name: ${profile.name}\n`
+        + `\n  Today's Results (${resultToday?.date || 'N/A'}):\n`}${
+          resultToday ? `    batteryResult: €${resultToday.batteryResult}\n`
+        + `    batteryResultTotal: €${resultToday.batteryResultTotal}\n`
+        + `    batteryResultImbalance: €${resultToday.batteryResultImbalance}\n`
+        + `    batteryResultEpex: €${resultToday.batteryResultEpex}\n`
+        + `    batteryResultCustom: €${resultToday.batteryResultCustom}\n`
+        + `    solarResult: €${resultToday.solarResult}\n`
+        + `    chargerResult: €${resultToday.chargerResult}\n`
+        + `    batteryCharged: ${resultToday.batteryCharged}\n`
+        + `    batteryDischarged: ${resultToday.batteryDischarged}\n`
+        + `    type: ${resultToday.type}\n`
+        + `    mode: ${resultToday.mode}\n`
+        + `    overallRank: ${resultToday.overallRank}\n`
+        + `    providerRank: ${resultToday.providerRank}\n`
+        + `    note: ${resultToday.note || '(none)'}` : '    (No data yet)\n'
+        }\n  Yesterday's Results (${resultYesterday?.date || 'N/A'}):\n${
+          resultYesterday ? `    batteryResult: €${resultYesterday.batteryResult}\n`
+        + `    batteryResultTotal: €${resultYesterday.batteryResultTotal}\n`
+        + `    batteryResultImbalance: €${resultYesterday.batteryResultImbalance}\n`
+        + `    batteryResultEpex: €${resultYesterday.batteryResultEpex}\n`
+        + `    batteryResultCustom: €${resultYesterday.batteryResultCustom}\n`
+        + `    type: ${resultYesterday.type}\n`
+        + `    overallRank: ${resultYesterday.overallRank}\n`
+        + `    providerRank: ${resultYesterday.providerRank}` : '    (No data yet)\n'}`,
       );
 
       return profile;
