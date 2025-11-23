@@ -83,11 +83,13 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
     const pollInterval = (this.getSetting('onbalansmarkt_poll_interval') || 300) * 1000;
 
     // Fetch immediately on startup
-    this.fetchAndUpdateProfile();
+    this.fetchAndUpdateProfile()
+      .catch((error) => this.error('Initial profile fetch failed:', error));
 
     // Then set up periodic polling
     this.profilePollerHandle = this.homey.setInterval(async () => {
-      await this.fetchAndUpdateProfile();
+      await this.fetchAndUpdateProfile()
+        .catch((error) => this.error('Profile polling failed:', error));
     }, pollInterval);
 
     this.log(`Profile poller started with ${pollInterval / 1000}s interval`);
@@ -165,11 +167,13 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
     this.stopCountdownTimer();
 
     // Update immediately
-    this.updateCountdownDisplay();
+    this.updateCountdownDisplay()
+      .catch((error) => this.error('Failed to update countdown display:', error));
 
     // Then update every 10 seconds
     this.countdownTimerHandle = this.homey.setInterval(() => {
-      this.updateCountdownDisplay();
+      this.updateCountdownDisplay()
+        .catch((error) => this.error('Failed to update countdown display:', error));
     }, 10000); // Update every 10 seconds for smooth countdown
 
     this.log('Countdown timer started');
@@ -423,6 +427,39 @@ export = class ZonneplanBatteryDevice extends Homey.Device {
 
     // Update all capabilities
     await this.updateCapabilities(metrics);
+
+    // Update global flow tokens via app
+    const offset = this.getSetting('total_earned_offset') || 0;
+    const app = this.homey.app as unknown as {
+      handleMetrics?: (metrics: {
+        dailyEarned: number;
+        totalEarned: number;
+        dailyCharged: number;
+        dailyDischarged: number;
+        batteryPercentage: number;
+        cycleCount: number;
+        loadBalancingActive: boolean;
+      }) => Promise<void>;
+    };
+    if (app.handleMetrics) {
+      this.log('Calling app.handleMetrics to update global flow tokens');
+      try {
+        await app.handleMetrics({
+          dailyEarned: metrics.dailyEarned,
+          totalEarned: metrics.totalEarned + offset,
+          dailyCharged: metrics.dailyCharged,
+          dailyDischarged: metrics.dailyDischarged,
+          batteryPercentage: metrics.batteryPercentage,
+          cycleCount: metrics.cycleCount,
+          loadBalancingActive: metrics.loadBalancingActive,
+        });
+        this.log('Successfully called app.handleMetrics');
+      } catch (error) {
+        this.error('Failed to call app.handleMetrics:', error);
+      }
+    } else {
+      this.log('WARNING: app.handleMetrics not available!');
+    }
 
     // Send to Onbalansmarkt if enabled
     if (this.getSetting('auto_send_measurements')) {
