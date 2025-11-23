@@ -1,4 +1,8 @@
 {
+  "0.4.6": {
+    "en": "Introduced global flow tokens for all battery metrics, making them available throughout Homey flows. Code quality improvements with full ESLint compliance. Global tokens: daily/total earnings, charged/discharged energy, battery percentage, cycle count, and load balancing status.",
+    "nl": "Globale flow tokens geïntroduceerd voor alle batterijmetrieken, waardoor ze beschikbaar zijn in alle Homey flows. Code kwaliteitsverbeteringen met volledige ESLint compliance. Globale tokens: dagelijkse/totale opbrengsten, geladen/ontladen energie, batterijpercentage, aantal cycli en load balancing status."
+  },
   "0.4.4": {
     "en": "Updated Onbalansmarkt API client to support new API response structure with direct resultToday/resultYesterday fields. Maintains backward compatibility with legacy array-based API structure. Improved error handling and content-type validation for API responses.",
     "nl": "Onbalansmarkt API-client geupdate ter ondersteuning van nieuwe API-responsstructuur met directe resultToday/resultYesterday-velden. Handhaaft achterwaartse compatibiliteit met legacy array-gebaseerde API-structuur. Verbeterde foutafhandeling en content-type validatie voor API-antwoorden."
