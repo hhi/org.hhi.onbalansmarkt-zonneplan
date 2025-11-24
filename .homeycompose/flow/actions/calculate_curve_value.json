@@ -1,0 +1,57 @@
+{
+    "id": "calculate_curve_value",
+    "title": {
+        "en": "Calculate value from curve",
+        "nl": "Bereken waarde uit curve"
+    },
+    "titleFormatted": {
+        "en": "Calculate value for [[input_value]] using curve [[curve]]",
+        "nl": "Bereken waarde voor [[input_value]] met curve [[curve]]"
+    },
+    "hint": {
+        "en": "Calculates a value based on an input and a curve. Format: '[operator] threshold : value'. Supports >, >=, <, <=, ==, !=. Evaluates lines from top to bottom, returns the first match. Use 'default : value' for a fallback.",
+        "nl": "Berekent een waarde op basis van invoer en een curve. Formaat: '[operator] drempel : waarde'. Ondersteunt >, >=, <, <=, ==, !=. Evalueert regels van boven naar beneden, geeft de eerste match terug. Gebruik 'default : waarde' als vangnet."
+    },
+    "tokens": [
+        {
+            "name": "result_value",
+            "type": "number",
+            "title": {
+                "en": "Result Value",
+                "nl": "Resultaat Waarde"
+            },
+            "example": 25
+        }
+    ],
+    "args": [
+        {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=zonneplan-battery"
+        },
+        {
+            "name": "input_value",
+            "type": "number",
+            "title": {
+                "en": "Input Value",
+                "nl": "Invoer Waarde"
+            },
+            "placeholder": {
+                "en": "Input value (e.g. temperature)",
+                "nl": "Invoerwaarde (bijv. temperatuur)"
+            }
+        },
+        {
+            "name": "curve",
+            "type": "text",
+            "title": {
+                "en": "Curve Definition",
+                "nl": "Curve Definitie"
+            },
+            "placeholder": {
+                "en": "18:20, 15:23, 10:25, 0:30",
+                "nl": "18:20, 15:23, 10:25, 0:30"
+            }
+        }
+    ]
+}

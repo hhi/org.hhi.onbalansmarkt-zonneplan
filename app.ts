@@ -1,6 +1,7 @@
 'use strict';
 
 import Homey from 'homey';
+import { registerFlowCards } from './lib/flow-cards';
 
 interface ZonneplanMetrics {
   dailyEarned: number;
@@ -30,6 +31,9 @@ module.exports = class ZonnePlanApp extends Homey.App {
     await this.initializeGlobalTokens();
 
     this.log('Zonneplan Battery App ready');
+
+    // Register flow cards
+    registerFlowCards(this);
   }
 
   /**

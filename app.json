@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "org.hhi.onbalansmarkt-zonneplan",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "compatibility": ">=12.4.0",
   "sdk": 3,
   "platforms": [
@@ -132,6 +132,63 @@
       }
     ],
     "actions": [
+      {
+        "id": "calculate_curve_value",
+        "title": {
+          "en": "Calculate value from curve",
+          "nl": "Bereken waarde uit curve"
+        },
+        "titleFormatted": {
+          "en": "Calculate value for [[input_value]] using curve [[curve]]",
+          "nl": "Bereken waarde voor [[input_value]] met curve [[curve]]"
+        },
+        "hint": {
+          "en": "Calculates a value based on an input value and a curve definition. Format: 'threshold:value', separated by commas or newlines. Example: '18:20, 15:23, -5:30'. Returns the value for the first threshold the input meets or exceeds.",
+          "nl": "Berekent een waarde op basis van een invoerwaarde en een curve definitie. Formaat: 'drempel:waarde', gescheiden door komma's of nieuwe regels. Voorbeeld: '18:20, 15:23, -5:30'. Geeft de waarde terug van de eerste drempel die de invoer haalt of overschrijdt."
+        },
+        "tokens": [
+          {
+            "name": "result_value",
+            "type": "number",
+            "title": {
+              "en": "Result Value",
+              "nl": "Resultaat Waarde"
+            },
+            "example": 25
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=zonneplan-battery"
+          },
+          {
+            "name": "input_value",
+            "type": "number",
+            "title": {
+              "en": "Input Value",
+              "nl": "Invoer Waarde"
+            },
+            "placeholder": {
+              "en": "Input value (e.g. temperature)",
+              "nl": "Invoerwaarde (bijv. temperatuur)"
+            }
+          },
+          {
+            "name": "curve",
+            "type": "text",
+            "title": {
+              "en": "Curve Definition",
+              "nl": "Curve Definitie"
+            },
+            "placeholder": {
+              "en": "18:20, 15:23, 10:25, 0:30",
+              "nl": "18:20, 15:23, 10:25, 0:30"
+            }
+          }
+        ]
+      },
       {
         "id": "receive_zonneplan_metrics",
         "title": {

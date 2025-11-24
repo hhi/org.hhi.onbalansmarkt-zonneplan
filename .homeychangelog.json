@@ -1,4 +1,8 @@
 {
+  "0.4.7": {
+    "en": "Added flow card for curve value calculation based on timestamp, enabling dynamic value lookups from charging/discharging curves.",
+    "nl": "Flow kaart toegevoegd voor curve waarde calculatie op basis van tijdstempel, waardoor dynamische waarde lookups van laad-/ontlaadcurves mogelijk zijn."
+  },
   "0.4.6": {
     "en": "Introduced global flow tokens for all battery metrics, making them available throughout Homey flows. Code quality improvements with full ESLint compliance. Global tokens: daily/total earnings, charged/discharged energy, battery percentage, cycle count, and load balancing status.",
     "nl": "Globale flow tokens geïntroduceerd voor alle batterijmetrieken, waardoor ze beschikbaar zijn in alle Homey flows. Code kwaliteitsverbeteringen met volledige ESLint compliance. Globale tokens: dagelijkse/totale opbrengsten, geladen/ontladen energie, batterijpercentage, aantal cycli en load balancing status."
